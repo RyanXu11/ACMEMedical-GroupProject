@@ -3,6 +3,7 @@
  *
  * @author Teddy Yap
  * 
+ * @author Ruchen Ding
  */
 package acmemedical.entity;
 
@@ -10,6 +11,16 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import jakarta.persistence.Access; // added by Ruchen - start
+import jakarta.persistence.AccessType;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table; // added by Ruchen - end
 
 import jakarta.persistence.Embedded;
 
@@ -19,14 +30,21 @@ import jakarta.persistence.Embedded;
  * The persistent class for the medical_training database table.
  */
 //TODO MT01 - Add the missing annotations.
+@Entity  // MT01
+@Table(name = "medical_training")  // MT01
+@Access(AccessType.FIELD)  // MT01
 //TODO MT02 - Do we need a mapped super class?  If so, which one?
-public class MedicalTraining extends PojoBase implements Serializable {
+public class MedicalTraining extends PojoBase implements Serializable { // MT02
 	private static final long serialVersionUID = 1L;
 	
 	// TODO MT03 - Add annotations for M:1.  What should be the cascade and fetch types?
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)  // MT03
+	@JoinColumn(name = "school_id", referencedColumnName = "id", nullable = false) // MT03
 	private MedicalSchool school;
 
 	// TODO MT04 - Add annotations for 1:1.  What should be the cascade and fetch types?
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)  // MT04
+	@JoinColumn(name = "certificate_id", referencedColumnName = "id", nullable = true) // MT04
 	private MedicalCertificate certificate;
 
 	@Embedded

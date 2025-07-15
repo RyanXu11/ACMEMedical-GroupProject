@@ -2,11 +2,22 @@
  * File:  MedicalCertificate.java Course Materials CST 8277
  *
  * @author Teddy Yap
+ * @author Ruchen Ding
  * 
  */
 package acmemedical.entity;
 
 import java.io.Serializable;
+
+import jakarta.persistence.Access; // added by Ruchen - start
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table; // added by Ruchen - end
 
 @SuppressWarnings("unused")
 
@@ -14,17 +25,24 @@ import java.io.Serializable;
  * The persistent class for the medical_certificate database table.
  */
 //TODO MC01 - Add the missing annotations.
+@Entity  // MC01
+@Table(name = "medical_certificate")  // MC01
+@Access(AccessType.FIELD)  // MC01
 //TODO MC02 - Do we need a mapped super class?  If so, which one?
-public class MedicalCertificate extends PojoBase implements Serializable {
+public class MedicalCertificate extends PojoBase implements Serializable { // MC02
 	private static final long serialVersionUID = 1L;
 	
 	// TODO MC03 - Add annotations for 1:1 mapping.  What should be the cascade and fetch types?
+	@OneToOne(mappedBy = "certificate", fetch = FetchType.LAZY) // MC03
 	private MedicalTraining medicalTraining;
 
 	// TODO MC04 - Add annotations for M:1 mapping.  What should be the cascade and fetch types?
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "physician_id", referencedColumnName = "id", nullable = false)  // MC04
 	private Physician owner;
 
 	// TODO MC05 - Add annotations.
+	@Column(name = "signed", nullable = false)  // MC05
 	private byte signed;
 
 	public MedicalCertificate() {

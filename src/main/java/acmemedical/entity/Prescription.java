@@ -2,6 +2,7 @@
  * File:  Prescription.java Course Materials CST 8277
  *
  * @author Teddy Yap
+ * @author Ruchen Ding
  * 
  */
 package acmemedical.entity;
@@ -45,9 +46,14 @@ public class Prescription extends PojoBaseCompositeKey<PrescriptionPK> implement
 	private Physician physician;
 
 	//TODO PR01 - Add missing annotations.  Similar to physician, this field is a part of the composite key of this entity.  What should be the cascade and fetch types?  Reference to a patient is not optional.
+	@MapsId("patientId")  // PR01 - Maps the 'patient' entity to the 'patientId' field in the embedded composite key (PrescriptionPK)
+	@ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY) // PR01
+	@JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false) // PR01
 	private Patient patient;
 
 	//TODO PR02 - Add missing annotations.  What should be the cascade and fetch types?
+	@ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY) // PR02
+	@JoinColumn(name = "medicine_id", referencedColumnName = "id", nullable = false) // PR02
 	private Medicine medicine;
 
 	@Column(name = "number_of_refills")

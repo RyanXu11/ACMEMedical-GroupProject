@@ -3,6 +3,7 @@
  *
  * @author Teddy Yap
  * @author Shariar (Shawn) Emami
+ * @author Ruchen Ding
  * 
  */
 package acmemedical.entity;
@@ -13,6 +14,23 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.Access; // added by Ruchen - start
+import jakarta.persistence.AccessType;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore; // added by Ruchen - end
+
 @SuppressWarnings("unused")
 
 /**
@@ -20,23 +38,40 @@ import java.util.Set;
  */
 
 //TODO SU01 - Make this into JPA entity and add all the necessary annotations inside the class.
+@Entity  // SU01 - JPA Entity
+@Table(name = "security_user") // added by Ruchen
+@Access(AccessType.FIELD) // added by Ruchen
 public class SecurityUser implements Serializable, Principal {
     /** Explicit set serialVersionUID */
     private static final long serialVersionUID = 1L;
 
     //TODO SU02 - Add annotations.
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id") // - SU02
     protected int id;
     
     //TODO SU03 - Add annotations.
+    @Column(name = "username", nullable = false, unique = true, length = 64) // - SU03
     protected String username;
     
     //TODO SU04 - Add annotations.
+    @Column(name = "pw_hash", nullable = false, length = 256) // - SU04
     protected String pwHash;
     
     //TODO SU05 - Add annotations.
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "physician_id", referencedColumnName = "id") // - SU05
     protected Physician physician;
     
     //TODO SU06 - Add annotations.
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "user_has_role",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    ) // - SU06
+    @JsonIgnore // optional
     protected Set<SecurityRole> roles = new HashSet<SecurityRole>();
 
     public SecurityUser() {
