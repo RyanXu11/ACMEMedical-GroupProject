@@ -1,0 +1,26 @@
+# Eclipse, Maven and OS ignores 
+# Eclipse settings
+.project
+.classpath
+.settings/
+
+# Maven output
+/target/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Test reports
+/surefire-reports/
+/site/
+
+# IDE settings
+*.iml
+.idea/
+*.swp
+*.bak
+*.tmp
