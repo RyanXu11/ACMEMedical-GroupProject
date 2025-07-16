@@ -26,6 +26,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -39,8 +40,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore; // added by Ruchen - end
 
 //TODO SU01 - Make this into JPA entity and add all the necessary annotations inside the class.
 @Entity  // SU01 - JPA Entity
-@Table(name = "security_user") // added by Ruchen
-@Access(AccessType.FIELD) // added by Ruchen
+@NamedQuery( // Defines a reusable JPQL query to find a SecurityUser by username
+	    name = "SecurityUser.userByName",
+	    query = "SELECT su FROM SecurityUser su LEFT JOIN FETCH su.roles LEFT JOIN FETCH su.physician WHERE su.username = :param1"
+	    ) // eagerly fetching associated roles and physician to avoid LazyInitializationException
+@Table(name = "security_user") // SU01 - Specifies the name of the database table this entity maps to
+@Access(AccessType.FIELD) // SU01 - Instructs JPA to access fields directly rather than through getters/setters
 public class SecurityUser implements Serializable, Principal {
     /** Explicit set serialVersionUID */
     private static final long serialVersionUID = 1L;
@@ -71,7 +76,7 @@ public class SecurityUser implements Serializable, Principal {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id")
     ) // - SU06
-    @JsonIgnore // optional
+    @JsonIgnore // - SU06
     protected Set<SecurityRole> roles = new HashSet<SecurityRole>();
 
     public SecurityUser() {
@@ -157,5 +162,6 @@ public class SecurityUser implements Serializable, Principal {
         builder.append("SecurityUser [id = ").append(id).append(", username = ").append(username).append("]");
         return builder.toString();
     }
+    
     
 }

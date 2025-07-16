@@ -2,8 +2,8 @@
  * File:  MedicalTraining.java Course Materials CST 8277
  *
  * @author Teddy Yap
- * 
  * @author Ruchen Ding
+ * 
  */
 package acmemedical.entity;
 

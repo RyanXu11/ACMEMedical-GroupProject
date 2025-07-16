@@ -3,6 +3,7 @@
  *
  * @author Teddy Yap
  * @author Shariar (Shawn) Emami
+ * @author Ruchen Ding
  * 
  */
 package acmemedical.entity;
@@ -10,6 +11,13 @@ package acmemedical.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import jakarta.persistence.Access;  // added by Ruchen - start
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Version; // added by Ruchen - end
 
 @SuppressWarnings("unused")
 
@@ -20,16 +28,22 @@ import java.util.Objects;
 //TODO PC01 - Add annotation to define this class as superclass of all entities.  Please see Week 9 lecture slides.
 //TODO PC02 - Add annotation to place all JPA annotations on fields.
 //TODO PC03 - Add annotation for listener class.
+@MappedSuperclass  // PC01
+@Access(AccessType.FIELD)  // PC02
+@EntityListeners(PojoCompositeListener.class)  // PC03
 public abstract class PojoBaseCompositeKey<ID extends Serializable> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// TODO PC04 - Add missing annotations.
+	@Version  // PC04
 	protected int version;
 
 	// TODO PC05 - Add missing annotations (hint, is this column on DB?).
+	@Column(name = "created", nullable = false, updatable = false)  // PC05
 	protected LocalDateTime created;
 
 	// TODO PC06 - Add missing annotations (hint, is this column on DB?).
+	@Column(name = "updated", nullable = false)  // PC06
 	protected LocalDateTime updated;
 
 	public abstract ID getId();
