@@ -75,6 +75,7 @@ public class ACMEMedicalService implements Serializable {
     @Inject
     protected Pbkdf2PasswordHash pbAndjPasswordHash;
 
+    // NOTE: This comment line added by Ryan to indicate CRUD service for Physician entity.
     public List<Physician> getAllPhysicians() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Physician> cq = cb.createQuery(Physician.class);
@@ -176,6 +177,7 @@ public class ACMEMedicalService implements Serializable {
         }
     }
     
+    // NOTE: This comment line added by Ryan to indicate CRUD service for MedicalSchool entity.
     public List<MedicalSchool> getAllMedicalSchools() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<MedicalSchool> cq = cb.createQuery(MedicalSchool.class);
@@ -252,6 +254,8 @@ public class ACMEMedicalService implements Serializable {
         return medicalSchoolToBeUpdated;
     }
     
+    
+    // NOTE: This comment line added by Ryan to indicate CRUD service for MedicalTraining entity.
     @Transactional
     public MedicalTraining persistMedicalTraining(MedicalTraining newMedicalTraining) {
         em.persist(newMedicalTraining);
@@ -274,5 +278,32 @@ public class ACMEMedicalService implements Serializable {
         }
         return medicalTrainingToBeUpdated;
     }
+    
+    // Delete method, added by Ryan
+    @Transactional
+    public MedicalTraining deleteMedicalTraining(int id) {
+        MedicalTraining trainingToDelete = getMedicalTrainingById(id);
+        if (trainingToDelete == null) {
+            return null;
+        }
+        
+        // Unlink from certificate (1:1 relationship)
+        if (trainingToDelete.getCertificate() != null) {
+            MedicalCertificate cert = trainingToDelete.getCertificate();
+            cert.setMedicalTraining(null);
+            trainingToDelete.setCertificate(null);
+        }
+        
+        // Remove reference from MedicalSchool's training list (OneToMany side)
+        if (trainingToDelete.getMedicalSchool() != null) {
+            trainingToDelete.getMedicalSchool().getMedicalTrainings().remove(trainingToDelete);
+        }
+        
+        em.remove(trainingToDelete);
+        return trainingToDelete;
+    }
+
+    
+    
     
 }

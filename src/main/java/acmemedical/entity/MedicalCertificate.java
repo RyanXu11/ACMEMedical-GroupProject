@@ -20,6 +20,7 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table; // added by Ruchen - end
 import jakarta.persistence.AttributeOverride; // added by Ryan
+import jakarta.persistence.CascadeType;
 
 @SuppressWarnings("unused")
 
@@ -42,7 +43,9 @@ public class MedicalCertificate extends PojoBase implements Serializable { // MC
 	public static final String ID_CARD_QUERY_NAME = "MedicalCertificate.findById";	//Added by Ryan
 
 	// TODO MC03 - Add annotations for 1:1 mapping.  What should be the cascade and fetch types?
-	@OneToOne(mappedBy = "certificate", fetch = FetchType.LAZY) // MC03
+//	@OneToOne(mappedBy = "certificate", fetch = FetchType.LAZY) // MC03
+	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})	//Added by Ryan
+	@JoinColumn(name = "training_id", referencedColumnName = "training_id", nullable = true)	//Added by Ryan
 	private MedicalTraining medicalTraining;
 
 	// TODO MC04 - Add annotations for M:1 mapping.  What should be the cascade and fetch types?

@@ -54,8 +54,9 @@ public class MedicalTraining extends PojoBase implements Serializable { // MT02
 	private MedicalSchool school;
 
 	// TODO MT04 - Add annotations for 1:1.  What should be the cascade and fetch types?
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)  // MT04
-	@JoinColumn(name = "certificate_id", referencedColumnName = "certificate_id", nullable = true) // MT04, referencedColumnName fixed by Ryan
+//	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)  // MT04
+//	@JoinColumn(name = "certificate_id", referencedColumnName = "certificate_id", nullable = true) // MT04
+	@OneToOne(mappedBy = "medicalTraining", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}) //Added by Ryan
 	private MedicalCertificate certificate;
 
 	@Embedded
