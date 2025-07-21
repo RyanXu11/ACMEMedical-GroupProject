@@ -28,6 +28,8 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table; // added by Ruchen - end
+import jakarta.persistence.NamedQueries; //Added by Ryan
+import jakarta.persistence.NamedQuery;	//Added by Ryan
 
 
 /**
@@ -48,8 +50,29 @@ import jakarta.persistence.Table; // added by Ruchen - end
     @JsonSubTypes.Type(value = PublicSchool.class, name = "public"),
     @JsonSubTypes.Type(value = PrivateSchool.class, name = "private")
 })  // MS04
+// @NamedQueries were added by Ryan
+@NamedQueries({
+    @NamedQuery(
+        name = MedicalSchool.ALL_MEDICAL_SCHOOLS_QUERY_NAME,
+        query = "SELECT ms FROM MedicalSchool ms"
+    ),
+    @NamedQuery(
+        name = MedicalSchool.SPECIFIC_MEDICAL_SCHOOL_QUERY_NAME,
+        query = "SELECT ms FROM MedicalSchool ms WHERE ms.id = :param1"
+    ),
+    @NamedQuery(
+        name = MedicalSchool.IS_DUPLICATE_QUERY_NAME,
+        query = "SELECT ms FROM MedicalSchool ms WHERE ms.name = :param1"
+    )
+})
 public abstract class MedicalSchool extends PojoBase implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	// Following 3 lines were added by Ryan
+	public static final String ALL_MEDICAL_SCHOOLS_QUERY_NAME = "MedicalSchool.findAll";
+	public static final String SPECIFIC_MEDICAL_SCHOOL_QUERY_NAME = "MedicalSchool.findById";
+	public static final String IS_DUPLICATE_QUERY_NAME = "MedicalSchool.isDuplicate";
+
 	
 	// TODO MS05 - Add the missing annotations.
 	@Column(name = "name", nullable = false, unique = true)  // MS05

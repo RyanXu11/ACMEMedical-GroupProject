@@ -18,6 +18,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table; // added by Ruchen - end
@@ -29,10 +30,13 @@ import jakarta.persistence.Table; // added by Ruchen - end
 //TODO PH01 - Add the missing annotations.
 @Entity  // PH01 - Marks this as a JPA entity
 //TODO PH02 - Do we need a mapped super class? If so, which one?
+@NamedQuery(name = "Physician.findAll", query = "SELECT p FROM Physician p")  //Added by Ryan
 @Table(name = "physician")  // Optional
 @Access(AccessType.FIELD)  // Let JPA access fields directly
 public class Physician extends PojoBase implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	public static final String ALL_PHYSICIANS_QUERY_NAME = "Physician.findAll"; //Added by Ryan
 
     public Physician() {
     	super();

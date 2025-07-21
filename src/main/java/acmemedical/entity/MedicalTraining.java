@@ -20,6 +20,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table; // added by Ruchen - end
 import jakarta.persistence.Column;	//added by Ryan
@@ -37,8 +38,15 @@ import jakarta.persistence.Embedded;
 @Access(AccessType.FIELD)  // MT01
 //TODO MT02 - Do we need a mapped super class?  If so, which one?
 @AttributeOverride(name = "id", column = @Column(name = "training_id"))	//Added by Ryan Xu
+@NamedQuery(
+	    name = MedicalTraining.FIND_BY_ID,
+	    query = "SELECT mt FROM MedicalTraining mt WHERE mt.id = :param1"
+	)	//Added by Ryan
 public class MedicalTraining extends PojoBase implements Serializable { // MT02
 	private static final long serialVersionUID = 1L;
+	
+	public static final String FIND_BY_ID = "MedicalTraining.findById";	//Added by Ryan
+
 	
 	// TODO MT03 - Add annotations for M:1.  What should be the cascade and fetch types?
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)  // MT03
