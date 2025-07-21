@@ -14,7 +14,7 @@ import jakarta.persistence.Entity; // added by Ruchen
 
 //TODO PRSC01 - Add missing annotations, please see Week 9 slides page 15.  Value 1 is public and value 0 is private.
 @Entity  // PRSC01
-@DiscriminatorValue("private")  // PRSC01
+@DiscriminatorValue("0")  // PRSC01, Modified "private" to "1"
 //TODO PRSC02 - Is a JSON annotation needed here?
 // no annotation neede (PRSC02)
 public class PrivateSchool extends MedicalSchool implements Serializable {

@@ -44,3 +44,16 @@ INSERT INTO `security_user` (`user_id`, `password_hash`, `username`, `physician_
 --  data for table `user_has_role`
 INSERT INTO `user_has_role` (`user_id`, `role_id`)
   VALUES (1,1), (2,2);
+-------------------------------
+SELECT user_id, username, password_hash FROM security_user WHERE username = 'admin';
+
+-- 临时测试用户（密码为 admin 的简单哈希）
+-- UPDATE security_user 
+-- SET password_hash = '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iKWKkkp7SgFTKlKS.Yw/y6tBTlvO' 
+-- WHERE username = 'admin';
+
+SELECT su.username, sr.name 
+FROM security_user su 
+JOIN user_has_role uhr ON su.user_id = uhr.user_id 
+JOIN security_role sr ON uhr.role_id = sr.role_id 
+WHERE su.username = 'admin';

@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.AttributeOverride;
@@ -44,8 +46,14 @@ import jakarta.persistence.Transient;
 //Hint - PojoBase is inherited by any entity with integer as their primary key.
 //Hint - PojoBaseCompositeKey is inherited by any entity with a composite key as their primary key.
 @AttributeOverride(name = "id", column = @Column(name = "medicine_id"))
+@NamedQuery(
+	    name = Medicine.FIND_BY_ID,
+	    query = "SELECT m FROM Medicine m WHERE m.id = :param1"
+	)	//Added by Ryan
 public class Medicine extends PojoBase implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	public static final String FIND_BY_ID = "Medicine.findById";	//Added by Ryan
 
 	// Hint - @Basic(optional = false) is used when the object cannot be null.
 	// Hint - @Basic or none can be used if the object can be null.
@@ -79,6 +87,7 @@ public class Medicine extends PojoBase implements Serializable {
 	@OneToMany(cascade=CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "medicine")
 	// Hint - java.util.Set is used as a collection, however List could have been used as well.
 	// Hint - java.util.Set will be unique and also possibly can provide better get performance with HashCode.
+	@JsonIgnore 	//To prevent infinte-loop, Added by Ryan
 	private Set<Prescription> prescriptions = new HashSet<>();
 
 	public Medicine() {

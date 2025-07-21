@@ -43,14 +43,14 @@ import jakarta.persistence.NamedQuery;	//Added by Ryan
 @Table(name = "medical_school")  // MS01
 @Access(AccessType.FIELD)  // MS01
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)  // MS02
-@DiscriminatorColumn(name = "school_type", discriminatorType = DiscriminatorType.STRING)  // MS02
+@DiscriminatorColumn(name = "public", discriminatorType = DiscriminatorType.INTEGER)  // MS02, fixed the name from "school_type" to "public" by Ryan
 @AttributeOverride(name = "id", column = @Column(name = "school_id"))		//MS03 Added by Ryan Xu
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "schoolType")  // MS04
 @JsonSubTypes({
     @JsonSubTypes.Type(value = PublicSchool.class, name = "public"),
     @JsonSubTypes.Type(value = PrivateSchool.class, name = "private")
 })  // MS04
-// @NamedQueries were added by Ryan
+// @NamedQueries were necessary for service level, added by Ryan
 @NamedQueries({
     @NamedQuery(
         name = MedicalSchool.ALL_MEDICAL_SCHOOLS_QUERY_NAME,
@@ -83,7 +83,7 @@ public abstract class MedicalSchool extends PojoBase implements Serializable {
 	private Set<MedicalTraining> medicalTrainings = new HashSet<>();
 
 	// TODO MS07 - Add missing annotation.
-	@Column(name = "is_public", nullable = false)  // MS07
+	@Column(name = "public", nullable = false, insertable = false, updatable = false)  // MS07，Modified "is_public" to "public" by Ryan
 	private boolean isPublic;
 
 	public MedicalSchool() {

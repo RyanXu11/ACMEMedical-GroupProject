@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Access; // added by Ruchen - start
 import jakarta.persistence.AccessType;
 import jakarta.persistence.AttributeOverride;
@@ -47,7 +49,6 @@ public class MedicalTraining extends PojoBase implements Serializable { // MT02
 	
 	public static final String FIND_BY_ID = "MedicalTraining.findById";	//Added by Ryan
 
-	
 	// TODO MT03 - Add annotations for M:1.  What should be the cascade and fetch types?
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)  // MT03
 	@JoinColumn(name = "school_id", referencedColumnName = "school_id", nullable = false) // MT03, referencedColumnName fixed by Ryan
@@ -57,6 +58,7 @@ public class MedicalTraining extends PojoBase implements Serializable { // MT02
 //	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)  // MT04
 //	@JoinColumn(name = "certificate_id", referencedColumnName = "certificate_id", nullable = true) // MT04
 	@OneToOne(mappedBy = "medicalTraining", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}) //Added by Ryan
+	@JsonIgnore 	//To prevent infinte-loop, Added by Ryan
 	private MedicalCertificate certificate;
 
 	@Embedded

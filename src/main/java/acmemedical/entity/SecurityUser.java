@@ -53,7 +53,7 @@ public class SecurityUser implements Serializable, Principal {
     //TODO SU02 - Add annotations.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id") // - SU02
+    @Column(name = "user_id") // - SU02, fixed from "id" to "user_id" by Ryan
     protected int id;
     
     //TODO SU03 - Add annotations.
@@ -61,7 +61,7 @@ public class SecurityUser implements Serializable, Principal {
     protected String username;
     
     //TODO SU04 - Add annotations.
-    @Column(name = "pw_hash", nullable = false, length = 256) // - SU04
+    @Column(name = "password_hash", nullable = false, length = 256) // - SU04
     protected String pwHash;
     
     //TODO SU05 - Add annotations.

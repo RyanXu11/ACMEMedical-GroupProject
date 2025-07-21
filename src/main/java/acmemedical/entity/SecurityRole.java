@@ -42,11 +42,11 @@ public class SecurityRole implements Serializable {
     //TODO SR02 - Add annotations.
     @Id // SR02
     @GeneratedValue(strategy = GenerationType.IDENTITY) // SR02
-    @Column(name = "id") // SR02
+    @Column(name = "role_id") // SR02, fixed "id" to "role_id" by Ryan
     protected int id;
     
     //TODO SR03 - Add annotations.
-    @Column(name = "role_name", nullable = false, unique = true) // SR03
+    @Column(name = "name", nullable = false, unique = true) // SR03, fixed "role_name" to "name" by Ryan
     protected String roleName;
     
     //TODO SR04 - Add annotations.

@@ -303,7 +303,60 @@ public class ACMEMedicalService implements Serializable {
         return trainingToDelete;
     }
 
+    // CRUD service for Medicine entity. By Ryan
+    @Transactional
+    public Medicine persistMedicine(Medicine newMedicine) {
+        em.persist(newMedicine);
+        return newMedicine;
+    }
     
+    public List<Medicine> getAllMedicines() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Medicine> cq = cb.createQuery(Medicine.class);
+        cq.select(cq.from(Medicine.class));
+        return em.createQuery(cq).getResultList();
+    }
+    
+    public Medicine getMedicineById(int id) {
+        return em.find(Medicine.class, id);
+    }
+
+    @Transactional
+    public Medicine updateMedicine(int id, Medicine medicineWithUpdates) {
+    	Medicine medicineToBeUpdated = getMedicineById(id);
+        if (medicineToBeUpdated == null) {
+            return null;
+        }
+    	
+        if (medicineWithUpdates != null) {
+            medicineToBeUpdated.setDrugName(medicineWithUpdates.getDrugName());
+            medicineToBeUpdated.setManufacturerName(medicineWithUpdates.getManufacturerName());
+            medicineToBeUpdated.setDosageInformation(medicineWithUpdates.getDosageInformation());
+        }
+        return medicineToBeUpdated;
+    }
+    
+    @Transactional
+    public Medicine deleteMedicine(int id) {
+        Medicine medicineToDelete = getMedicineById(id);
+        if (medicineToDelete == null) {
+            return null;
+        }
+
+        // Safely unlink from prescriptions
+        Set<Prescription> prescriptions = medicineToDelete.getPrescriptions();
+        if (prescriptions != null && !prescriptions.isEmpty()) {
+            for (Prescription p : prescriptions) {
+                if (p != null) {
+                    p.setMedicine(null);
+                }
+            }
+        }
+
+        em.remove(medicineToDelete);
+        return medicineToDelete;
+    }
+   
     
     
 }
