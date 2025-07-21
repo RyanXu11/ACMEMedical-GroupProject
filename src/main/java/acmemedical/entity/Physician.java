@@ -13,6 +13,7 @@ import java.util.Set;
 
 import jakarta.persistence.Access; // added by Ruchen - start
 import jakarta.persistence.AccessType;
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

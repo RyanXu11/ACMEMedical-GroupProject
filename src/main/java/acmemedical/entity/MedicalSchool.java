@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
@@ -41,7 +42,7 @@ import jakarta.persistence.Table; // added by Ruchen - end
 @Access(AccessType.FIELD)  // MS01
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)  // MS02
 @DiscriminatorColumn(name = "school_type", discriminatorType = DiscriminatorType.STRING)  // MS02
-
+@AttributeOverride(name = "id", column = @Column(name = "school_id"))		//MS03 Added by Ryan Xu
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "schoolType")  // MS04
 @JsonSubTypes({
     @JsonSubTypes.Type(value = PublicSchool.class, name = "public"),

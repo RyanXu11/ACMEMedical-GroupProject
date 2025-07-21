@@ -37,11 +37,13 @@ public abstract class PojoBase implements Serializable {
 
 	// TODO PB04 - Add missing annotations.
 	@Id  // PB04
+	@GeneratedValue(strategy = GenerationType.IDENTITY)  // Added by Ryan Xu
 	protected int id;
 
 	// TODO PB05 - Add missing annotations.
 	@Version  // PB05
-	protected int version;
+	@Column(name="version")		//Added by Ryan Xu
+	protected long version;
 
 	// TODO PB06 - Add missing annotations (hint, is this column on DB?).
 	@Column(name = "created")  // PB06
@@ -59,11 +61,11 @@ public abstract class PojoBase implements Serializable {
 		this.id = id;
 	}
 
-	public int getVersion() {
+	public long getVersion() {
 		return version;
 	}
 
-	public void setVersion(int version) {
+	public void setVersion(long version) {
 		this.version = version;
 	}
 

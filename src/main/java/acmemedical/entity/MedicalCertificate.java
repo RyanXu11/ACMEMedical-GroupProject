@@ -18,6 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table; // added by Ruchen - end
+import jakarta.persistence.AttributeOverride; // added by Ryan
 
 @SuppressWarnings("unused")
 
@@ -29,6 +30,7 @@ import jakarta.persistence.Table; // added by Ruchen - end
 @Table(name = "medical_certificate")  // MC01
 @Access(AccessType.FIELD)  // MC01
 //TODO MC02 - Do we need a mapped super class?  If so, which one?
+@AttributeOverride(name = "id", column = @Column(name = "certificate_id")) // Added by Ryan
 public class MedicalCertificate extends PojoBase implements Serializable { // MC02
 	private static final long serialVersionUID = 1L;
 	

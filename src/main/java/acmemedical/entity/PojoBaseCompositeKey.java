@@ -36,7 +36,8 @@ public abstract class PojoBaseCompositeKey<ID extends Serializable> implements S
 
 	// TODO PC04 - Add missing annotations.
 	@Version  // PC04
-	protected int version;
+	@Column(name = "version")	//Added by Ryan Xu
+	protected long version;
 
 	// TODO PC05 - Add missing annotations (hint, is this column on DB?).
 	@Column(name = "created", nullable = false, updatable = false)  // PC05
@@ -50,11 +51,11 @@ public abstract class PojoBaseCompositeKey<ID extends Serializable> implements S
 
 	public abstract void setId(ID id);
 
-	public int getVersion() {
+	public long getVersion() {
 		return version;
 	}
 
-	public void setVersion(int version) {
+	public void setVersion(long version) {
 		this.version = version;
 	}
 

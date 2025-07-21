@@ -12,6 +12,7 @@
 -- GRANT ALL PRIVILEGES ON *.* TO `cst8277`@`localhost`;
 --
 -- -----------------------------------------------------
+drop database if EXISTS acmemedical;
 CREATE SCHEMA IF NOT EXISTS `acmemedical` DEFAULT CHARACTER SET utf8mb4;
 USE `acmemedical`;
 
@@ -200,3 +201,13 @@ CREATE TABLE IF NOT EXISTS `user_has_role` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
+
+-- Copied from Scripts/reset auto increment.sql
+USE `acmemedical`;
+ALTER TABLE physician AUTO_INCREMENT = 1;
+ALTER TABLE medical_school AUTO_INCREMENT = 1;
+ALTER TABLE medical_training AUTO_INCREMENT = 1;
+ALTER TABLE medical_certificate AUTO_INCREMENT = 1;
+ALTER TABLE medicine AUTO_INCREMENT = 1;
+ALTER TABLE patient AUTO_INCREMENT = 1;
+

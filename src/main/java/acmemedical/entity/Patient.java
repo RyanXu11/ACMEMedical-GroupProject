@@ -13,6 +13,7 @@ import java.util.Set;
 
 import jakarta.persistence.Access; // added by Ruchen - start
 import jakarta.persistence.AccessType;
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,6 +31,7 @@ import jakarta.persistence.Table; // added by Ruchen - end
 @Table(name = "patient")  // PA01
 @Access(AccessType.FIELD) // PA01
 //TODO PA02 - Do we need a mapped super class?  If so, which one?
+@AttributeOverride(name = "id", column = @Column(name = "patient_id"))  //Added by Ryan Xu
 public class Patient extends PojoBase implements Serializable { // PA02 - Yes. Patient extends PojoBase which is a mapped superclass.
 	private static final long serialVersionUID = 1L;
 	
@@ -42,19 +44,19 @@ public class Patient extends PojoBase implements Serializable { // PA02 - Yes. P
 	private String lastName;
 
 	// TODO PA05 - Add missing annotations.
-	@Column(name = "year", nullable = false)  // PA05
+	@Column(name = "year_of_birth", nullable = false)  // PA05, column named fixed by Ryan
 	private int year;
 
 	// TODO PA06 - Add missing annotations.
-	@Column(name = "address", length = 100)  // PA06
+	@Column(name = "home_address", length = 100)  // PA06, column named fixed by Ryan
 	private String address;
 
 	// TODO PA07 - Add missing annotations.
-	@Column(name = "height")  // PA07
+	@Column(name = "height_cm")  // PA07, column named fixed by Ryan
 	private int height;
 
 	// TODO PA08 - Add missing annotations.
-	@Column(name = "weight")  // PA08
+	@Column(name = "weight_kg")  // PA08, column named fixed by Ryan
 	private int weight;
 
 	// TODO PA09 - Add missing annotations.

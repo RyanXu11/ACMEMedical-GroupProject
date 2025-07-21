@@ -2,7 +2,7 @@
  * File:  Medicine.java Course Materials CST 8277
  *
  * @author Teddy Yap
- * 
+ * @author Ryan Xu
  */
 package acmemedical.entity;
 
@@ -11,13 +11,14 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -33,15 +34,16 @@ import jakarta.persistence.Transient;
 //Hint - @Entity name does not matter as long as it is consistent across the code.
 @Entity
 //Hint - @Table defines a specific table on DB which is mapped to this entity.
-@Table(name = "medicine") 
+@Table(name = "medicine")
+@Access(AccessType.FIELD)	//Added by Ryan Xu
 //Hint - @NamedQuery attached to this class which uses JPQL/HQL.  SQL cannot be used with NamedQuery.
 //Hint - @NamedQuery uses the name which is defined in @Entity for JPQL, if no name is defined use class name.
 //Hint - @NamedNativeQuery can optionally be used if there is a need for SQL query.
 @NamedQuery(name = "Medicine.findAll", query = "SELECT m FROM Medicine m")
 //Hint - @AttributeOverride can override column details.  This entity uses medicine_id as its primary key name, it needs to override the name in the mapped super class.
-@AttributeOverride(name = "id", column = @Column(name = "medicine_id"))
 //Hint - PojoBase is inherited by any entity with integer as their primary key.
 //Hint - PojoBaseCompositeKey is inherited by any entity with a composite key as their primary key.
+@AttributeOverride(name = "id", column = @Column(name = "medicine_id"))
 public class Medicine extends PojoBase implements Serializable {
 	private static final long serialVersionUID = 1L;
 
