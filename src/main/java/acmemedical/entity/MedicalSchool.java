@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes; // added by Ruchen - start
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -80,6 +81,7 @@ public abstract class MedicalSchool extends PojoBase implements Serializable {
 
 	// TODO MS06 - Add the 1:M annotation.  What should be the cascade and fetch types?
 	@OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)  // MS06
+	@JsonIgnore 	//To prevent infinte-loop, Added by Ryan
 	private Set<MedicalTraining> medicalTrainings = new HashSet<>();
 
 	// TODO MS07 - Add missing annotation.

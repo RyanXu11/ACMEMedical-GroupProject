@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;		//Added by Ryan
+
 import jakarta.persistence.Access; // added by Ruchen - start
 import jakarta.persistence.AccessType;
 import jakarta.persistence.AttributeOverride;
@@ -65,6 +67,7 @@ public class Patient extends PojoBase implements Serializable { // PA02 - Yes. P
 
 	// TODO PA10 - Add annotations for 1:M relation.  What should be the cascade and fetch types?
 	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)  // PA10
+	@JsonIgnore 	//To prevent infinte-loop, Added by Ryan
 	private Set<Prescription> prescriptions = new HashSet<>();
 
 	public Patient() {

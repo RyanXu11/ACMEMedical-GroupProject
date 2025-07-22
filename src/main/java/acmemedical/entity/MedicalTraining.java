@@ -52,6 +52,7 @@ public class MedicalTraining extends PojoBase implements Serializable { // MT02
 	// TODO MT03 - Add annotations for M:1.  What should be the cascade and fetch types?
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)  // MT03
 	@JoinColumn(name = "school_id", referencedColumnName = "school_id", nullable = false) // MT03, referencedColumnName fixed by Ryan
+	@JsonIgnore 	//To prevent infinte-loop, Added by Ryan
 	private MedicalSchool school;
 
 	// TODO MT04 - Add annotations for 1:1.  What should be the cascade and fetch types?

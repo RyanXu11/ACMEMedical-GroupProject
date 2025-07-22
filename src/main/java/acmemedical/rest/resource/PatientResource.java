@@ -1,11 +1,11 @@
 /********************************************************************************************************
- * File:  MedicineResource.java
+ * File:  PatientResource.java
  * Course: CST8277
  * Professor: Teddy Yap
  * @author Ryan Xu
  * Created Date: 2025-07-21
  * Last Modified Date: 2025-07-21
- * Description: REST API resource class to expose CRUD operations for Medicine entity.
+ * Description: REST API resource class to expose CRUD operations for Patient entity.
  */
 
 package acmemedical.rest.resource;
@@ -34,13 +34,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import acmemedical.ejb.ACMEMedicalService;
-import acmemedical.entity.Medicine;
+import acmemedical.entity.Patient;
 
-@Path("medicines")
+@Path("patients")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Stateless
-public class MedicineResource {
+public class PatientResource {
 
     @EJB
     protected ACMEMedicalService service;
@@ -48,43 +48,43 @@ public class MedicineResource {
     private static final Logger LOG = LogManager.getLogger();
     
     @GET
-    public Response getMedicines() {
-        LOG.debug("Retrieving all Medicine...");
-        List<Medicine> medicines = service.getAllMedicines();
-        LOG.debug("Medicine found = {}", medicines);
-        Response response = Response.ok(medicines).build();
+    public Response getPatients() {
+        LOG.debug("Retrieving all Patient...");
+        List<Patient> patients = service.getAllPatients();
+        LOG.debug("Patient found = {}", patients);
+        Response response = Response.ok(patients).build();
         return response;
     }
 
     @GET
     @Path("/{id}")
     @RolesAllowed({ADMIN_ROLE, USER_ROLE})
-    public Response getMedicineById(@PathParam("id") int id) {
-        LOG.debug("Fetching Medicine by ID: {}", id);
-        Medicine med = service.getMedicineById(id);
-        if (med == null) {
+    public Response getPatientById(@PathParam("id") int id) {
+        LOG.debug("Fetching Patient by ID: {}", id);
+        Patient pat = service.getPatientById(id);
+        if (pat == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new HttpErrorResponse(404, "Medicine not found"))
+                    .entity(new HttpErrorResponse(404, "Patient not found"))
                     .build();
         }
-        return Response.ok(med).build();
+        return Response.ok(pat).build();
     }
 
     @POST
     @RolesAllowed({ADMIN_ROLE})
-    public Response addMedicine(Medicine newMed) {
-        Medicine created = service.persistMedicine(newMed);
+    public Response addPatient(Patient newPt) {
+    	Patient created = service.persistPatient(newPt);
         return Response.ok(created).build();  // Or Response.status(201)...
     }
 
     @PUT
     @Path("/{id}")
     @RolesAllowed({ADMIN_ROLE})
-    public Response updateMedicine(@PathParam("id") int id, Medicine updatedMed) {
-        Medicine result = service.updateMedicine(id, updatedMed);
+    public Response updatePatient(@PathParam("id") int id, Patient updatedPat) {
+    	Patient result = service.updatePatient(id, updatedPat);
         if (result == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                .entity(new HttpErrorResponse(404, "Medicine not found"))
+                .entity(new HttpErrorResponse(404, "Patient not found"))
                 .build();
         }
         return Response.ok(result).build();
@@ -93,11 +93,11 @@ public class MedicineResource {
     @DELETE
     @Path("/{id}")
     @RolesAllowed({ADMIN_ROLE})
-    public Response deleteMedicine(@PathParam("id") int id) {
-        Medicine deleted = service.deleteMedicine(id);
+    public Response deletePatient(@PathParam("id") int id) {
+    	Patient deleted = service.deletePatient(id);
         if (deleted == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new HttpErrorResponse(404, "Medicine not found"))
+                    .entity(new HttpErrorResponse(404, "Patient not found"))
                     .build();
         }
         return Response.ok(deleted).build();

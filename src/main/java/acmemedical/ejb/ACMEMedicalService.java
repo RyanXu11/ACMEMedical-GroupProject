@@ -49,6 +49,7 @@ import org.apache.logging.log4j.Logger;
 
 import acmemedical.entity.MedicalTraining;
 import acmemedical.entity.Patient;
+import acmemedical.entity.DurationAndStatus;
 import acmemedical.entity.MedicalCertificate;
 import acmemedical.entity.Medicine;
 import acmemedical.entity.Prescription;
@@ -253,28 +254,79 @@ public class ACMEMedicalService implements Serializable {
         }
         return medicalSchoolToBeUpdated;
     }
-    
-    
+       
     // NOTE: This comment line added by Ryan to indicate CRUD service for MedicalTraining entity.
     @Transactional
     public MedicalTraining persistMedicalTraining(MedicalTraining newMedicalTraining) {
+        // 1. Extract detached school from DTO， added by Ryan
+        MedicalSchool detachedSchool = newMedicalTraining.getMedicalSchool();
+
+        // 2. Attach the real managed school from DB, added by Ryan
+        if (detachedSchool != null && detachedSchool.getId() > 0) {
+            MedicalSchool managedSchool = em.find(MedicalSchool.class, detachedSchool.getId());
+            newMedicalTraining.setMedicalSchool(managedSchool); // replace with managed entity
+        }
         em.persist(newMedicalTraining);
         return newMedicalTraining;
     }
     
+    @Transactional		//Added by Ryan
     public MedicalTraining getMedicalTrainingById(int mtId) {
         TypedQuery<MedicalTraining> allMedicalTrainingQuery = em.createNamedQuery(MedicalTraining.FIND_BY_ID, MedicalTraining.class);
         allMedicalTrainingQuery.setParameter(PARAM1, mtId);
         return allMedicalTrainingQuery.getSingleResult();
+    }
+    
+    //This method was added by Ryan
+    @Transactional
+    public List<MedicalTraining> getAllMedicalTrainings() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<MedicalTraining> cq = cb.createQuery(MedicalTraining.class);
+        cq.select(cq.from(MedicalTraining.class));
+        return em.createQuery(cq).getResultList();
     }
 
     @Transactional
     public MedicalTraining updateMedicalTraining(int id, MedicalTraining medicalTrainingWithUpdates) {
     	MedicalTraining medicalTrainingToBeUpdated = getMedicalTrainingById(id);
         if (medicalTrainingToBeUpdated != null) {
-            em.refresh(medicalTrainingToBeUpdated);
-            em.merge(medicalTrainingWithUpdates);
-            em.flush();
+//            em.refresh(medicalTrainingToBeUpdated);
+//            em.merge(medicalTrainingWithUpdates);
+//            em.flush();
+        	
+            // Update link with MedicalSchool
+        	if (medicalTrainingWithUpdates.getMedicalSchool() != null) {
+        	    int schoolId = medicalTrainingWithUpdates.getMedicalSchool().getId();
+        	    MedicalSchool managedSchool = em.find(MedicalSchool.class, schoolId);
+        	    medicalTrainingToBeUpdated.setMedicalSchool(managedSchool);
+        	}
+            
+            // Update link with Certificate
+        	if (medicalTrainingWithUpdates.getCertificate() != null) {
+        	    int certId = medicalTrainingWithUpdates.getCertificate().getId();
+        	    MedicalCertificate managedCert = em.find(MedicalCertificate.class, certId);
+        	    medicalTrainingToBeUpdated.setCertificate(managedCert);
+        	}
+            
+            // Update link with embedded DurationAndStatus
+            if (medicalTrainingWithUpdates.getDurationAndStatus() != null) {
+                DurationAndStatus current = medicalTrainingToBeUpdated.getDurationAndStatus();
+                DurationAndStatus update = medicalTrainingWithUpdates.getDurationAndStatus();
+                
+                if (current == null) {
+                    medicalTrainingToBeUpdated.setDurationAndStatus(new DurationAndStatus());
+                    current = medicalTrainingToBeUpdated.getDurationAndStatus();
+                }
+                
+                if (update.getStartDate() != null) {
+                    current.setStartDate(update.getStartDate());
+                }
+                if (update.getEndDate() != null) {
+                    current.setEndDate(update.getEndDate());
+                }
+                current.setActive(update.getActive());
+            }
+            
         }
         return medicalTrainingToBeUpdated;
     }
@@ -357,6 +409,55 @@ public class ACMEMedicalService implements Serializable {
         return medicineToDelete;
     }
    
+    // CRUD service for Patient entity. By Ryan
+    @Transactional
+    public Patient persistPatient(Patient newPatient) {
+        em.persist(newPatient);
+        return newPatient;
+    }
     
+    public List<Patient> getAllPatients() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Patient> cq = cb.createQuery(Patient.class);
+        cq.select(cq.from(Patient.class));
+        return em.createQuery(cq).getResultList();
+    }
+    
+    public Patient getPatientById(int id) {
+        return em.find(Patient.class, id);
+    }
+
+    @Transactional
+    public Patient updatePatient(int id, Patient patientWithUpdates) {
+    	Patient patientToBeUpdated = getPatientById(id);
+        if (patientToBeUpdated == null) {
+            return null;
+        }
+    	
+        if (patientWithUpdates != null) {
+        	patientToBeUpdated.setFirstName(patientWithUpdates.getFirstName());
+        	patientToBeUpdated.setLastName(patientWithUpdates.getLastName());
+        	patientToBeUpdated.setYear(patientWithUpdates.getYear());
+        	patientToBeUpdated.setAddress(patientWithUpdates.getAddress());
+        	patientToBeUpdated.setHeight(patientWithUpdates.getHeight());
+        	patientToBeUpdated.setWeight(patientWithUpdates.getWeight());
+        	patientToBeUpdated.setSmoker(patientWithUpdates.getSmoker());
+        }
+        return patientToBeUpdated;
+    }
+    
+    @Transactional
+    public Patient deletePatient(int id) {
+    	Patient patientToDelete = getPatientById(id);
+        if (patientToDelete == null) {
+            return null;
+        }
+
+        em.remove(patientToDelete);
+        return patientToDelete;
+    }
+    
+    // CRUD service for MedicalTraining entity. By Ryan
+ 
     
 }

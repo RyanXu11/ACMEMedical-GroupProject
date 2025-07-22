@@ -1,11 +1,11 @@
 /********************************************************************************************************
- * File:  MedicineResource.java
+ * File:  MedicalTrainingResource.java
  * Course: CST8277
  * Professor: Teddy Yap
  * @author Ryan Xu
  * Created Date: 2025-07-21
  * Last Modified Date: 2025-07-21
- * Description: REST API resource class to expose CRUD operations for Medicine entity.
+ * Description: REST API resource class to expose CRUD operations for MedicalTraining entity.
  */
 
 package acmemedical.rest.resource;
@@ -34,13 +34,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import acmemedical.ejb.ACMEMedicalService;
-import acmemedical.entity.Medicine;
+import acmemedical.entity.MedicalTraining;
 
-@Path("medicines")
+@Path("medicalTrainings")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Stateless
-public class MedicineResource {
+public class MedicalTrainingResource {
 
     @EJB
     protected ACMEMedicalService service;
@@ -48,43 +48,43 @@ public class MedicineResource {
     private static final Logger LOG = LogManager.getLogger();
     
     @GET
-    public Response getMedicines() {
-        LOG.debug("Retrieving all Medicine...");
-        List<Medicine> medicines = service.getAllMedicines();
-        LOG.debug("Medicine found = {}", medicines);
-        Response response = Response.ok(medicines).build();
+    public Response getMedicalTrainings() {
+        LOG.debug("Retrieving all MedicalTraining...");
+        List<MedicalTraining> medicalTrainings = service.getAllMedicalTrainings();
+        LOG.debug("MedicalTraining found = {}", medicalTrainings);
+        Response response = Response.ok(medicalTrainings).build();
         return response;
     }
 
     @GET
     @Path("/{id}")
     @RolesAllowed({ADMIN_ROLE, USER_ROLE})
-    public Response getMedicineById(@PathParam("id") int id) {
-        LOG.debug("Fetching Medicine by ID: {}", id);
-        Medicine med = service.getMedicineById(id);
-        if (med == null) {
+    public Response getMedicalTrainingById(@PathParam("id") int id) {
+        LOG.debug("Fetching MedicalTraining by ID: {}", id);
+        MedicalTraining pat = service.getMedicalTrainingById(id);
+        if (pat == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new HttpErrorResponse(404, "Medicine not found"))
+                    .entity(new HttpErrorResponse(404, "MedicalTraining not found"))
                     .build();
         }
-        return Response.ok(med).build();
+        return Response.ok(pat).build();
     }
 
     @POST
     @RolesAllowed({ADMIN_ROLE})
-    public Response addMedicine(Medicine newMed) {
-        Medicine created = service.persistMedicine(newMed);
+    public Response addMedicalTraining(MedicalTraining newMt) {
+    	MedicalTraining created = service.persistMedicalTraining(newMt);
         return Response.ok(created).build();  // Or Response.status(201)...
     }
 
     @PUT
     @Path("/{id}")
     @RolesAllowed({ADMIN_ROLE})
-    public Response updateMedicine(@PathParam("id") int id, Medicine updatedMed) {
-        Medicine result = service.updateMedicine(id, updatedMed);
+    public Response updateMedicalTraining(@PathParam("id") int id, MedicalTraining updatedMt) {
+    	MedicalTraining result = service.updateMedicalTraining(id, updatedMt);
         if (result == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                .entity(new HttpErrorResponse(404, "Medicine not found"))
+                .entity(new HttpErrorResponse(404, "MedicalTraining not found"))
                 .build();
         }
         return Response.ok(result).build();
@@ -93,11 +93,11 @@ public class MedicineResource {
     @DELETE
     @Path("/{id}")
     @RolesAllowed({ADMIN_ROLE})
-    public Response deleteMedicine(@PathParam("id") int id) {
-        Medicine deleted = service.deleteMedicine(id);
+    public Response deleteMedicalTraining(@PathParam("id") int id) {
+    	MedicalTraining deleted = service.deleteMedicalTraining(id);
         if (deleted == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new HttpErrorResponse(404, "Medicine not found"))
+                    .entity(new HttpErrorResponse(404, "MedicalTraining not found"))
                     .build();
         }
         return Response.ok(deleted).build();
