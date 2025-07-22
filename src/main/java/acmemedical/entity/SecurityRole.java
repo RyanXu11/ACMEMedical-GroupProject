@@ -26,6 +26,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table; // added by Ruchen - end
 
+import jakarta.persistence.NamedQuery;	// Added by Ryan
+
 @SuppressWarnings("unused")
 
 /**
@@ -35,9 +37,15 @@ import jakarta.persistence.Table; // added by Ruchen - end
 @Entity // SR01
 @Table(name = "security_role") // SR01
 @Access(AccessType.FIELD) // SR01
+@NamedQuery(
+	    name = SecurityRole.FIND_BY_NAME,
+	    query = "SELECT sr FROM SecurityRole sr WHERE sr.roleName = :param1"
+	)
 public class SecurityRole implements Serializable {
     /** Explicit set serialVersionUID */
     private static final long serialVersionUID = 1L;
+    
+    public static final String FIND_BY_NAME = "SecurityRole.findByName";	// Added by Ryan
 
     //TODO SR02 - Add annotations.
     @Id // SR02

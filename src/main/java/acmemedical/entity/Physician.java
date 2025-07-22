@@ -11,8 +11,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;				//Added by Ryan
 import com.fasterxml.jackson.annotation.JsonManagedReference;	//Added by Ryan
+import jakarta.persistence.NamedQuery;							//Added by Ryan
 
 import jakarta.persistence.Access; // added by Ruchen - start
 import jakarta.persistence.AccessType;
@@ -21,7 +22,6 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table; // added by Ruchen - end
@@ -55,6 +55,7 @@ public class Physician extends PojoBase implements Serializable {
 
 	// TODO PH05 - Add annotations for 1:M relation.  What should be the cascade and fetch types?
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)  // PH05
+	@JsonIgnore 	//To prevent infinte-loop, Added by Ryan
 	private Set<MedicalCertificate> medicalCertificates = new HashSet<>();
 
 	// TODO PH06 - Add annotations for 1:M relation.  What should be the cascade and fetch types?
@@ -107,6 +108,7 @@ public class Physician extends PojoBase implements Serializable {
 
 	// the following is added by Ruchen
 	@OneToOne(mappedBy = "physician", fetch = FetchType.LAZY)
+	@JsonIgnore 	//To prevent infinte-loop, Added by Ryan
 	private SecurityUser securityUser;
 
 	public SecurityUser getSecurityUser() {

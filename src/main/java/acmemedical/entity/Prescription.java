@@ -10,6 +10,8 @@ package acmemedical.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Basic;
@@ -41,19 +43,22 @@ public class Prescription extends PojoBaseCompositeKey<PrescriptionPK> implement
 
 	// @MapsId is used to map a part of composite key to an entity.
 	@MapsId("physicianId")
-    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "physician_id", referencedColumnName = "id", nullable = false)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})		//Added by Ryan
 	private Physician physician;
 
 	//TODO PR01 - Add missing annotations.  Similar to physician, this field is a part of the composite key of this entity.  What should be the cascade and fetch types?  Reference to a patient is not optional.
 	@MapsId("patientId")  // PR01 - Maps the 'patient' entity to the 'patientId' field in the embedded composite key (PrescriptionPK)
-	@ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY) // PR01
+	@ManyToOne(optional = false, fetch = FetchType.LAZY) // PR01
 	@JoinColumn(name = "patient_id", referencedColumnName = "patient_id", nullable = false) // PR01, referencedColumnName fixed by Ryan
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})		//Added by Ryan
 	private Patient patient;
 
 	//TODO PR02 - Add missing annotations.  What should be the cascade and fetch types?
-	@ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY) // PR02
+	@ManyToOne(optional = false, fetch = FetchType.LAZY) // PR02
 	@JoinColumn(name = "medicine_id", referencedColumnName = "medicine_id", nullable = false) // PR02, referencedColumnName fixed by Ryan
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})		//Added by Ryan
 	private Medicine medicine;
 
 	@Column(name = "number_of_refills")

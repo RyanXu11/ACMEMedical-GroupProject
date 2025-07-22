@@ -27,6 +27,7 @@ import jakarta.ws.rs.core.Response;
 
 import static acmemedical.utility.MyConstants.ADMIN_ROLE;
 import static acmemedical.utility.MyConstants.USER_ROLE;
+import static acmemedical.utility.MyConstants.MEDICAL_TRAINING_RESOURCE_NAME;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ import org.apache.logging.log4j.Logger;
 import acmemedical.ejb.ACMEMedicalService;
 import acmemedical.entity.MedicalTraining;
 
-@Path("medicalTrainings")
+@Path(MEDICAL_TRAINING_RESOURCE_NAME)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Stateless

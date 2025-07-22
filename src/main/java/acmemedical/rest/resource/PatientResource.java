@@ -27,6 +27,7 @@ import jakarta.ws.rs.core.Response;
 
 import static acmemedical.utility.MyConstants.ADMIN_ROLE;
 import static acmemedical.utility.MyConstants.USER_ROLE;
+import static acmemedical.utility.MyConstants.PATIENT_RESOURCE_NAME;
 
 import java.util.List;
 
@@ -36,17 +37,16 @@ import org.apache.logging.log4j.Logger;
 import acmemedical.ejb.ACMEMedicalService;
 import acmemedical.entity.Patient;
 
-@Path("patients")
+@Path(PATIENT_RESOURCE_NAME)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Stateless
 public class PatientResource {
+    private static final Logger LOG = LogManager.getLogger();
 
     @EJB
     protected ACMEMedicalService service;
 
-    private static final Logger LOG = LogManager.getLogger();
-    
     @GET
     public Response getPatients() {
         LOG.debug("Retrieving all Patient...");

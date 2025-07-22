@@ -49,6 +49,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore; // added by Ruchen - end
 public class SecurityUser implements Serializable, Principal {
     /** Explicit set serialVersionUID */
     private static final long serialVersionUID = 1L;
+    
+    
 
     //TODO SU02 - Add annotations.
     @Id

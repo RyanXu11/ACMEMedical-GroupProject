@@ -10,6 +10,7 @@
 
 package acmemedical.rest.resource;
 
+import acmemedical.utility.EntityValidationUtil;
 import acmemedical.ejb.ACMEMedicalService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
@@ -27,26 +28,25 @@ import jakarta.ws.rs.core.Response;
 
 import static acmemedical.utility.MyConstants.ADMIN_ROLE;
 import static acmemedical.utility.MyConstants.USER_ROLE;
+import static acmemedical.utility.MyConstants.MEDICINE_RESOURCE_NAME;
 
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import acmemedical.ejb.ACMEMedicalService;
 import acmemedical.entity.Medicine;
 
-@Path("medicines")
+@Path(MEDICINE_RESOURCE_NAME)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Stateless
 public class MedicineResource {
-
+    private static final Logger LOG = LogManager.getLogger();
+    
     @EJB
     protected ACMEMedicalService service;
 
-    private static final Logger LOG = LogManager.getLogger();
-    
     @GET
     public Response getMedicines() {
         LOG.debug("Retrieving all Medicine...");
@@ -61,13 +61,12 @@ public class MedicineResource {
     @RolesAllowed({ADMIN_ROLE, USER_ROLE})
     public Response getMedicineById(@PathParam("id") int id) {
         LOG.debug("Fetching Medicine by ID: {}", id);
-        Medicine med = service.getMedicineById(id);
-        if (med == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new HttpErrorResponse(404, "Medicine not found"))
-                    .build();
-        }
-        return Response.ok(med).build();
+        Medicine result = service.getMedicineById(id);
+        
+        Response err = EntityValidationUtil.validateEntityExists("Medicine", id, result != null);
+        if (err != null) return err;
+        
+        return Response.ok(result).build();
     }
 
     @POST
@@ -82,11 +81,10 @@ public class MedicineResource {
     @RolesAllowed({ADMIN_ROLE})
     public Response updateMedicine(@PathParam("id") int id, Medicine updatedMed) {
         Medicine result = service.updateMedicine(id, updatedMed);
-        if (result == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                .entity(new HttpErrorResponse(404, "Medicine not found"))
-                .build();
-        }
+        
+        Response err = EntityValidationUtil.validateEntityExists("Medicine", id, result != null);
+        if (err != null) return err;
+        
         return Response.ok(result).build();
     }
 
@@ -95,11 +93,10 @@ public class MedicineResource {
     @RolesAllowed({ADMIN_ROLE})
     public Response deleteMedicine(@PathParam("id") int id) {
         Medicine deleted = service.deleteMedicine(id);
-        if (deleted == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new HttpErrorResponse(404, "Medicine not found"))
-                    .build();
-        }
+        
+        Response err = EntityValidationUtil.validateEntityExists("Medicine", id, deleted != null);
+        if (err != null) return err;
+        
         return Response.ok(deleted).build();
     }
 }

@@ -22,6 +22,7 @@ import jakarta.ejb.EJB;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.SecurityContext;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -106,6 +107,21 @@ public class PhysicianResource {
     }
 
     @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ADMIN_ROLE})
+    public Response updatePhysician(@PathParam("id") int id, Physician updatedPhysician) {
+        Physician updated = service.updatePhysicianById(id, updatedPhysician);
+        if (updated == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new HttpErrorResponse(404, "Physician not found"))
+                    .build();
+        }
+        return Response.ok(updated).build();
+    }
+
+    @PUT
     //Only an ‘ADMIN_ROLE’ user can associate a Medicine and/or Patient to a Physician.
     @RolesAllowed({ADMIN_ROLE})
     @Path(PHYSICIAN_PATIENT_MEDICINE_RESOURCE_PATH)
@@ -114,6 +130,19 @@ public class PhysicianResource {
         Medicine medicine = service.setMedicineForPhysicianPatient(physicianId, patientId, newMedicine);
         response = Response.ok(medicine).build();
         return response;
+    }
+    
+    @DELETE
+    @Path("/{id}")
+    @RolesAllowed({ADMIN_ROLE})
+    public Response deletePhysician(@PathParam("id") int id) {
+    	Physician deleted = service.deletePhysicianById(id);
+        if (deleted == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new HttpErrorResponse(404, "Patient not found"))
+                    .build();
+        }
+        return Response.ok(deleted).build();
     }
     
 }

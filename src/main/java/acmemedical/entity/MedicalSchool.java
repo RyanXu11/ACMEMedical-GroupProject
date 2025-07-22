@@ -63,7 +63,7 @@ import jakarta.persistence.NamedQuery;	//Added by Ryan
     ),
     @NamedQuery(
         name = MedicalSchool.IS_DUPLICATE_QUERY_NAME,
-        query = "SELECT ms FROM MedicalSchool ms WHERE ms.name = :param1"
+        query = "SELECT COUNT(ms) FROM MedicalSchool ms WHERE ms.name = :param1"
     )
 })
 public abstract class MedicalSchool extends PojoBase implements Serializable {

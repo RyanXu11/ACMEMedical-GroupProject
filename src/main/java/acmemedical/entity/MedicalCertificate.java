@@ -11,6 +11,7 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Access; // added by Ruchen - start
 import jakarta.persistence.AccessType;
@@ -49,13 +50,13 @@ public class MedicalCertificate extends PojoBase implements Serializable { // MC
 //	@OneToOne(mappedBy = "certificate", fetch = FetchType.LAZY) // MC03
 	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})	//Added by Ryan
 	@JoinColumn(name = "training_id", referencedColumnName = "training_id", nullable = true)	//Added by Ryan
-	@JsonIgnore 	//To prevent infinte-loop, Added by Ryan
+	@JsonIgnoreProperties({"medicalCertificates"})	//To prevent infinte-loop, Added by Ryan
 	private MedicalTraining medicalTraining;
 
 	// TODO MC04 - Add annotations for M:1 mapping.  What should be the cascade and fetch types?
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "physician_id", referencedColumnName = "id", nullable = false)  // MC04
-	@JsonIgnore 	//To prevent infinte-loop, Added by Ryan
+	@JsonIgnoreProperties({"certificates", "medicalTrainings", "prescriptions"})	//To prevent infinte-loop, Added by Ryan
 	private Physician owner;
 
 	// TODO MC05 - Add annotations.
