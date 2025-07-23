@@ -76,19 +76,14 @@ Base URL: http://localhost:8080/rest-acmemedical/api/v1/
 
 ## 4 Testing with Postman
 ### 4.1 Steps
-1. Import the REST-ACMEMedical-Sample.postman_collection.json file.
+1. Import the REST-ACMEMedical-Sample.postman_collection.json file in POSTMAN.
 
-2. Use Basic Auth:
+2. Basic Auth can be changed during testing
 	- Admin: admin:admin
 	- User: cst8277:8277
 
-3. Ensure correct port and endpoint paths (adjust localhost:8080 if needed)
+3. Ensure correct port and endpoint paths
 
-4. Try:
-	- Adding new MedicalCertificate
-	- Attempting duplicate insertion (should return 409 + JSON message)
-	- Secured endpoint access test
-5. POSTMAN
 
 ### 4.2 REST Endpoints Testing Summary
 #### MedicalSchool `/medicalschool`
