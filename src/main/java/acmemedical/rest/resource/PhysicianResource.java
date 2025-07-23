@@ -40,7 +40,6 @@ import org.apache.logging.log4j.Logger;
 import org.glassfish.soteria.WrappingCallerPrincipal;
 
 import acmemedical.ejb.ACMEMedicalService;
-import acmemedical.entity.MedicalCertificate;
 import acmemedical.entity.Medicine;
 import acmemedical.entity.SecurityUser;
 import acmemedical.entity.Physician;

@@ -319,7 +319,7 @@ public class ACMEMedicalService implements Serializable {
 
         // 2. Attach the real managed school from DB, added by Ryan
         if (detachedSchool != null && detachedSchool.getId() > 0) {
-            MedicalSchool managedSchool = em.find(MedicalSchool.class, detachedSchool.getId());
+            MedicalSchool managedSchool = em.getReference(MedicalSchool.class, detachedSchool.getId());
             newMedicalTraining.setMedicalSchool(managedSchool); // replace with managed entity
         }
         em.persist(newMedicalTraining);

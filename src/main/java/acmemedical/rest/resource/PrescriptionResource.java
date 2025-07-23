@@ -57,6 +57,7 @@ public class PrescriptionResource {
     protected EntityManager em;
     
     @GET
+    @RolesAllowed({ADMIN_ROLE})
     public Response getPrescriptions() {
         LOG.debug("Retrieving all Prescription...");
         List<Prescription> patients = service.getAllPrescriptions();
@@ -67,6 +68,7 @@ public class PrescriptionResource {
 
     @GET
     @Path("/{physicianId}/{patientId}")
+    @RolesAllowed({ADMIN_ROLE, USER_ROLE})
     public Response getPrescriptionByIds(@PathParam("physicianId") int physicianId,
                                          @PathParam("patientId") int patientId) {
         Prescription prescription = service.getPrescriptionByIds(physicianId, patientId);

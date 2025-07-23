@@ -113,10 +113,10 @@ public class MedicalSchoolResource {
         if (err != null) return err;
         
         newMedicalTraining.setMedicalSchool(ms);
-        ms.getMedicalTrainings().add(newMedicalTraining);
+        MedicalTraining saved = service.persistMedicalTraining(newMedicalTraining); //Changed by Ryan
         service.updateMedicalSchool(msId, ms);
         
-        return Response.ok(newMedicalTraining).build();		//Fix "sc" to "newMedicalTraining", by Ryan
+        return Response.ok(saved).build();		//Fix "sc" to "saved", by Ryan
     }
 
     @PUT

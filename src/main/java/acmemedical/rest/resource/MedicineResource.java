@@ -48,6 +48,7 @@ public class MedicineResource {
     protected ACMEMedicalService service;
 
     @GET
+    @RolesAllowed({ADMIN_ROLE})
     public Response getMedicines() {
         LOG.debug("Retrieving all Medicine...");
         List<Medicine> medicines = service.getAllMedicines();

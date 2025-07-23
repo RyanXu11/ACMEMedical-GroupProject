@@ -75,6 +75,7 @@ acmemedical-drop.sql
 Base URL: http://localhost:8080/rest-acmemedical/api/v1/
 
 ## 4 Testing with Postman
+### 4.1 Steps
 1. Import the REST-ACMEMedical-Sample.postman_collection.json file.
 
 2. Use Basic Auth:
@@ -88,48 +89,73 @@ Base URL: http://localhost:8080/rest-acmemedical/api/v1/
 	- Attempting duplicate insertion (should return 409 + JSON message)
 	- Secured endpoint access test
 5. POSTMAN
-# API Testing Results
 
-## REST Endpoints Testing Summary
+### 4.2 REST Endpoints Testing Summary
+#### MedicalSchool `/medicalschool`
+| Method | Endpoint | Status | Notes | Source |
+|--------|----------|--------|-------|--------|
+| GET | `/{id}` | ✅ | Returns JSON "404 Not Found" for non-existent ID | Skeleton |
+| GET |  | ✅ | Returns "401 Unauthorized" for invalid credentials | Skeleton |
+| POST |  | ✅ | Duplicate submissions will be rejected, with a 409 JSON response. | Skeleton |
+| POST |`/{medicalSchoolId}/medicaltraining`| ✅ | Can submit multiple times, must embedded format | Skeleton |
+| PUT | `/{id}` | ✅ | Returns JSON "404 Not Found" for non-existent ID | Skeleton |
+| DELETE | `/{id}` | ✅ | CReturns JSON "404 Not Found" for non-existent ID | Skeleton |
 
-| Entity | Method | Endpoint | Status | Notes |
-|--------|---------|----------|---------|--------|
-| **Medicine** | GET | `/medicines/{id}` | ✅ | Returns JSON error for non-existent ID |
-| | GET | `/medicines` | ✅ | Returns all medicines |
-| | POST | `/medicines` | ✅ | Multiple submissions create multiple records |
-| | PUT | `/medicines/{id}` | ✅ | Returns JSON error for non-existent ID |
-| | DELETE | `/medicines/{id}` | ✅ | Returns JSON error for non-existent ID |
-| **Patient** | GET | `/patients/{id}` | ✅ | Returns JSON error for non-existent ID |
-| | GET | `/patients` | ✅ | Returns all patients |
-| | POST | `/patients` | ✅ | Multiple submissions create multiple records |
-| | PUT | `/patients/{id}` | ✅ | Returns JSON error for non-existent ID |
-| | DELETE | `/patients/{id}` | ✅ | Returns JSON error for non-existent ID |
-| **Prescription** | GET | `/prescriptions/{patientId}/{medicineId}` | ✅ | Returns JSON error for non-existent composite key |
-| | GET | `/prescriptions` | ✅ | Returns all prescriptions |
-| | POST | `/prescriptions` | ✅ | Composite primary key prevents duplicates, returns JSON error on repeat submission |
-| | PUT | `/prescriptions/{patientId}/{medicineId}` | ✅ | Returns JSON error for non-existent composite key |
-| | DELETE | `/prescriptions/{patientId}/{medicineId}` | ✅ | Returns JSON error for non-existent composite key |
-| **MedicalTraining** | GET | `/medical-trainings/{id}` | ✅ | Returns JSON error for non-existent ID |
-| | GET | `/medical-trainings` | ✅ | Returns all medical trainings |
-| | POST | `/medical-trainings` | ✅ | Multiple submissions create multiple records |
-| | PUT | `/medical-trainings/{id}` | ✅ | Returns JSON error for non-existent ID |
-| | DELETE | `/medical-trainings/{id}` | ✅ | Returns JSON error for non-existent ID |
-| **Physician** | GET | `/physicians/{id}` | ✅ | Returns "404 Not Found" for non-existent ID |
-| | GET | `/physicians` | ✅ | Returns "401 Unauthorized" for invalid credentials |
-| | POST | `/physicians` | ⚠️ | Returns "409 Conflict" on duplicate submission but still creates new record |
-| | PUT | `/physicians/{physicianId}/patient/{patientId}/medicine` | ✅ | Has transient fields set to NULL |
-| | PUT | `/physicians/{id}` | ✅ | Returns JSON error for non-existent ID |
-| | DELETE | `/physicians/{id}` | ✅ | Returns JSON error for non-existent ID |
-| **MedicalSchool** | GET | `/medical-schools/{id}` | ✅ | Completed testing |
-| | GET | `/medical-schools` | ✅ | Completed testing |
-| | POST | `/medical-schools` | ✅ | Completed testing |
-| | PUT | `/medical-schools/{id}` | ✅ | Completed testing |
-| | DELETE | `/medical-schools/{id}` | ✅ | Completed testing |
-| **MedicalCertificate** | GET | `/medical-certificates/{id}` | ✅ | Completed testing |
-| | GET | `/medical-certificates` | ✅ | Completed testing |
-| | POST | `/medical-certificates` | ✅ | Prevents duplicate physician-training combinations |
-| | PUT | `/medical-certificates/{id}` | ✅ | Completed testing |
-| | DELETE | `/medical-certificates/{id}` | ✅ | Completed testing |
+#### Physician `/physician`
+| Method | Endpoint | Status | Notes | Source |
+|--------|----------|--------|-------|--------|
+| GET | `//{id}` | ✅ | Returns JSON "404 Not Found" for non-existent ID | Skeleton |
+| GET || ✅ | Returns "401 Unauthorized" for invalid credentials | Skeleton |
+| POST |  | ✅ | Returns "409 Conflict" on duplicate submission but still creates new record | Skeleton |
+| PUT | `/physicians/{physicianId}/patient/{patientId}/medicine` | ✅ | Has transient fields set to NULL | Skeleton |
+| PUT | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+| DELETE | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+
+#### Medicine `/medicine`
+| Method | Endpoint | Status | Notes | Source |
+|--------|----------|--------|-------|--------| Added |
+| GET | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+| GET | | ✅ | Returns all medicines | Added |
+| POST | | ✅ | Multiple submissions create multiple records | Added |
+| PUT | `/medicine/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+| DELETE | `/medicine/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+
+#### Patient `/patient`
+| Method | Endpoint | Status | Notes | Source |
+|--------|----------|--------|-------|--------|
+| GET | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+| GET |  | ✅ | Returns all patients | Added |
+| POST |  | ✅ | Multiple submissions create multiple records | Added |
+| PUT | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+| DELETE | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+
+#### Prescription `/prescription`
+| Method | Endpoint | Status | Notes | Source |
+|--------|----------|--------|-------|--------|
+| GET | `/{patientId}/{medicineId}` | ✅ | Returns JSON error for non-existent composite key | Added |
+| GET |  | ✅ | Returns all prescriptions | Added |
+| POST |  | ✅ | Returns JSON error on repeat submission | Added |
+| PUT | `/prescriptions/{patientId}/{medicineId}` | ✅ | Returns JSON error for non-existent composite key | Added |
+| DELETE | `/prescriptions/{patientId}/{medicineId}` | ✅ | Returns JSON error for non-existent composite key | Added |
+
+#### MedicalTraining `/medicaltraining`
+| Method | Endpoint | Status | Notes | Source |
+|--------|----------|--------|-------|--------|
+| GET | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+| GET |  | ✅ | Returns all medical trainings | Added |
+| POST |  | ✅ | Multiple submissions create multiple records | Added |
+| PUT | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+| DELETE | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+
+
+#### MedicalCertificate `/medicalcertificate`
+| Method | Endpoint | Status | Notes | Source |
+|--------|----------|--------|-------|--------|
+| GET | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+| GET |  | ✅ | Returns "401 Unauthorized" for invalid credentials | Added |
+| POST |  | ✅ | Prevents duplicate physician-training combinations | Added |
+| PUT | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+| DELETE | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
 
 ## Legend
 - ✅ **Completed**: All tests passed as expected
@@ -137,10 +163,8 @@ Base URL: http://localhost:8080/rest-acmemedical/api/v1/
 - ❌ **Failed**: Tests failed or not working as expected
 
 ## Special Notes
-1. **Prescription Entity**: Uses composite primary key (patientId + medicineId)
-2. **Physician Entity**: Original functionality preserved, added DELETE endpoint for assignment
-3. **MedicalCertificate Entity**: Implements unique constraint on physician-training combination
-4. **Authentication**: Required for physician-related endpoints
+1. **Prescription Entity**: Uses composite primary key (patientId + medicineId), embedded "PrescriptionPK"
+2. **MedicalTraining Entity**: embedded "DurationAndStatus"
 
 
 ## JUnit Testing (50+ tests required)
