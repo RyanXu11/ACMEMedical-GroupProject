@@ -113,7 +113,7 @@ Base URL: http://localhost:8080/rest-acmemedical/api/v1/
 
 #### Medicine `/medicine`
 | Method | Endpoint | Status | Notes | Source |
-|--------|----------|--------|-------|--------| Added |
+|--------|----------|--------|-------|--------|
 | GET | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
 | GET | | ✅ | Returns all medicines | Added |
 | POST | | ✅ | Multiple submissions create multiple records | Added |
