@@ -4,6 +4,7 @@
  * @author Teddy Yap
  * @author Shariar (Shawn) Emami
  * @author (original) Mike Norman
+ * @author Ryan Xu
  * 
  */
 package acmemedical.rest.resource;
@@ -39,9 +40,11 @@ import org.apache.logging.log4j.Logger;
 import org.glassfish.soteria.WrappingCallerPrincipal;
 
 import acmemedical.ejb.ACMEMedicalService;
+import acmemedical.entity.MedicalCertificate;
 import acmemedical.entity.Medicine;
 import acmemedical.entity.SecurityUser;
 import acmemedical.entity.Physician;
+
 
 @Path(PHYSICIAN_RESOURCE_NAME)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -55,7 +58,7 @@ public class PhysicianResource {
 
     @Inject
     protected SecurityContext sc;
-
+    
     @GET
     //Only a user with the SecurityRole ‘ADMIN_ROLE’ can get the list of all physicians.
     @RolesAllowed({ADMIN_ROLE})
@@ -107,21 +110,6 @@ public class PhysicianResource {
     }
 
     @PUT
-    @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ADMIN_ROLE})
-    public Response updatePhysician(@PathParam("id") int id, Physician updatedPhysician) {
-        Physician updated = service.updatePhysicianById(id, updatedPhysician);
-        if (updated == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new HttpErrorResponse(404, "Physician not found"))
-                    .build();
-        }
-        return Response.ok(updated).build();
-    }
-
-    @PUT
     //Only an ‘ADMIN_ROLE’ user can associate a Medicine and/or Patient to a Physician.
     @RolesAllowed({ADMIN_ROLE})
     @Path(PHYSICIAN_PATIENT_MEDICINE_RESOURCE_PATH)
@@ -132,6 +120,21 @@ public class PhysicianResource {
         return response;
     }
     
+    // PUT By ID, added by Ryan
+    @PUT
+    @Path("/{id}")
+    @RolesAllowed({ADMIN_ROLE})
+    public Response updatePhysician(@PathParam("id") int id, Physician updatedPhysician) {
+        Physician updated = service.updatePhysicianById(id, updatedPhysician);
+        if (updated == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new HttpErrorResponse(404, "Physician not found"))
+                    .build();
+        }
+        return Response.ok(updated).build();
+    }
+    
+    // DEELTE, added by Rayn
     @DELETE
     @Path("/{id}")
     @RolesAllowed({ADMIN_ROLE})

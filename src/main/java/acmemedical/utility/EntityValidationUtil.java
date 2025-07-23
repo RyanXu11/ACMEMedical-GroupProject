@@ -11,6 +11,7 @@
 package acmemedical.utility;
 
 import jakarta.persistence.EntityManager;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import acmemedical.entity.*;
@@ -52,7 +53,18 @@ public class EntityValidationUtil {
             HttpErrorResponse error = new HttpErrorResponse(404, entityType + " with ID " + id + " not found");
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
-        return null;  // OK
+        return null;
+    }
+    
+    public static Response duplicateEntityExists(String entityType, int id) {
+        HttpErrorResponse error = new HttpErrorResponse(
+            409,
+            entityType + " already exists (existing ID = " + id + ")"
+        );
+        return Response.status(Response.Status.CONFLICT)
+            .entity(error)
+            .type(MediaType.APPLICATION_JSON)
+            .build();
     }
     
     public static <T> Response validateFound(T entity, String entityName, int id) {

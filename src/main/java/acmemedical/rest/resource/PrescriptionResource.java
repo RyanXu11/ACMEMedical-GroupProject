@@ -71,8 +71,13 @@ public class PrescriptionResource {
                                          @PathParam("patientId") int patientId) {
         Prescription prescription = service.getPrescriptionByIds(physicianId, patientId);
         if (prescription == null) {
+        	HttpErrorResponse error = new HttpErrorResponse(
+        		    404,
+        		    "Prescription not found for Physician ID " + physicianId + " and Patient ID " + patientId
+        		);
             return Response.status(Response.Status.NOT_FOUND)
-                           .entity("Prescription not found for Physician ID " + physicianId + " and Patient ID " + patientId)
+                           .entity(error)
+                           .type(MediaType.APPLICATION_JSON)
                            .build();
         }
         return Response.ok(prescription).build();

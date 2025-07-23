@@ -73,20 +73,14 @@ public class MedicalCertificateResource {
     @POST
     @RolesAllowed({ADMIN_ROLE})
     public Response addMedicalCertificate(MedicalCertificate newMc) {
-    	MedicalCertificate created = service.persistMedicalCertificate(newMc);
-        return Response.ok(created).build();  // Or Response.status(201)...
+        return service.persistMedicalCertificate(newMc);
     }
 
     @PUT
     @Path("/{id}")
     @RolesAllowed({ADMIN_ROLE})
     public Response updateMedicalCertificate(@PathParam("id") int id, MedicalCertificate updatedMc) {
-    	MedicalCertificate result = service.updateMedicalCertificate(id, updatedMc);
-    	
-        Response err = EntityValidationUtil.validateEntityExists("MedicalCertificate", id, result != null);
-        if (err != null) return err;
-        
-        return Response.ok(result).build();
+        return service.updateMedicalCertificate(id, updatedMc);
     }
 
     @DELETE

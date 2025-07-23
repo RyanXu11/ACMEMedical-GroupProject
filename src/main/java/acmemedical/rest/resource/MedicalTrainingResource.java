@@ -62,13 +62,13 @@ public class MedicalTrainingResource {
     @RolesAllowed({ADMIN_ROLE, USER_ROLE})
     public Response getMedicalTrainingById(@PathParam("id") int id) {
         LOG.debug("Fetching MedicalTraining by ID: {}", id);
-        MedicalTraining pat = service.getMedicalTrainingById(id);
-        if (pat == null) {
+        MedicalTraining mt = service.getMedicalTrainingById(id);
+        if (mt == null) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new HttpErrorResponse(404, "MedicalTraining not found"))
                     .build();
         }
-        return Response.ok(pat).build();
+        return Response.ok(mt).build();
     }
 
     @POST

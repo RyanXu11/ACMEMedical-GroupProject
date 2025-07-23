@@ -62,6 +62,8 @@ import acmemedical.entity.PrescriptionPK;
 import acmemedical.entity.SecurityRole;
 import acmemedical.entity.SecurityUser;
 import acmemedical.rest.resource.HttpErrorResponse;
+import acmemedical.utility.EntityOperationResponse;
+import acmemedical.utility.EntityValidationUtil;
 import acmemedical.entity.Physician;
 import acmemedical.entity.MedicalSchool;
 
@@ -325,9 +327,10 @@ public class ACMEMedicalService implements Serializable {
     }
     
     public MedicalTraining getMedicalTrainingById(int mtId) {
-        TypedQuery<MedicalTraining> allMedicalTrainingQuery = em.createNamedQuery(MedicalTraining.FIND_BY_ID, MedicalTraining.class);
-        allMedicalTrainingQuery.setParameter(PARAM1, mtId);
-        return allMedicalTrainingQuery.getSingleResult();
+        TypedQuery<MedicalTraining> query = em.createNamedQuery(MedicalTraining.FIND_BY_ID, MedicalTraining.class);
+        query.setParameter(PARAM1, mtId);
+        List<MedicalTraining> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
     }
     
     //This method was added by Ryan
@@ -511,22 +514,50 @@ public class ACMEMedicalService implements Serializable {
     
     // CRUD service for MedicalCertificate entity. By Ryan
     @Transactional
-    public MedicalCertificate persistMedicalCertificate(MedicalCertificate newMC) {
+    public Response persistMedicalCertificate(MedicalCertificate newMC) {
+    	// Defensive checks
+        if (newMC == null || newMC.getOwner() == null || newMC.getMedicalTraining() == null) {
+            throw new IllegalArgumentException("MedicalCertificate, Owner, and MedicalTraining must not be null");
+        }
+        
+        int ownerId = newMC.getOwner().getId();
+        int trainingId = newMC.getMedicalTraining().getId();
+        if (ownerId == 0 || trainingId == 0) {
+            throw new IllegalArgumentException("Owner ID and MedicalTraining ID must be non-zero");
+        }
+        
+        //Check for existing record
+        TypedQuery<MedicalCertificate> query = em.createQuery(
+                "SELECT mc FROM MedicalCertificate mc WHERE mc.owner.id = :ownerId AND mc.medicalTraining.id = :trainingId",
+                MedicalCertificate.class);
+            query.setParameter("ownerId", ownerId);
+            query.setParameter("trainingId", trainingId);
+
+        List<MedicalCertificate> existing = query.getResultList();
+        if (!existing.isEmpty()) {
+            EntityOperationResponse<MedicalCertificate> response =
+                new EntityOperationResponse<>("Medical certificate already exists for this physician and training.",
+                                               existing.get(0));
+            return Response.status(Response.Status.CONFLICT)
+                           .entity(response)
+                           .type(MediaType.APPLICATION_JSON)
+                           .build();
+        }
+
     	//To deal with detached entity error
         MedicalCertificate newCert = new MedicalCertificate();
         newCert.setSigned(newMC.getSigned());
-        if (newMC.getMedicalTraining() != null && newMC.getMedicalTraining().getId() != 0) {
-            MedicalTraining trainingRef = em.getReference(MedicalTraining.class, newMC.getMedicalTraining().getId());
-            newCert.setMedicalTraining(trainingRef);
-        }
+        newCert.setMedicalTraining(em.getReference(MedicalTraining.class, trainingId));
+        newCert.setOwner(em.getReference(Physician.class, ownerId));
 
-        if (newMC.getOwner() != null && newMC.getOwner().getId() != 0) {
-            Physician ownerRef = em.getReference(Physician.class, newMC.getOwner().getId());
-            newCert.setOwner(ownerRef);
-        }
-        
         em.persist(newCert);
-        return newCert;
+
+        EntityOperationResponse<MedicalCertificate> response =
+            new EntityOperationResponse<>("New medical certificate created.", newCert);
+        return Response.status(Response.Status.CREATED)
+                       .entity(response)
+                       .type(MediaType.APPLICATION_JSON)
+                       .build();
     }
     
     public List<MedicalCertificate> getAllMedicalCertificates() {
@@ -541,24 +572,30 @@ public class ACMEMedicalService implements Serializable {
     }
 
     @Transactional
-    public MedicalCertificate updateMedicalCertificate(int id, MedicalCertificate medicalCertificateWithUpdates) {
-    	MedicalCertificate medicalCertificateToBeUpdated = getMedicalCertificateById(id);
-		if (medicalCertificateToBeUpdated == null || medicalCertificateWithUpdates == null) {
-			return null;
-		}
+    public Response updateMedicalCertificate(int id, MedicalCertificate updatedMc) {
+    	MedicalCertificate existing = getMedicalCertificateById(id);
+        if (existing == null) {
+            return EntityValidationUtil.validateEntityExists("MedicalCertificate", id, false);
+        }
     	
-		// signed is mandatory
-		medicalCertificateToBeUpdated.setSigned(medicalCertificateWithUpdates.getSigned());
+		// update "signed"
+        existing.setSigned(updatedMc.getSigned());
 
-		// Optional: update training association (can be null)
-		medicalCertificateToBeUpdated.setMedicalTraining(medicalCertificateWithUpdates.getMedicalTraining());
-
-		// Mandatory: physician (owner) must not be null, enforced by DB
-		if (medicalCertificateWithUpdates.getOwner() != null) {
-			medicalCertificateToBeUpdated.setOwner(medicalCertificateWithUpdates.getOwner());
-		}
-		
-        return medicalCertificateToBeUpdated;
+        if (updatedMc.getMedicalTraining() != null && updatedMc.getMedicalTraining().getId() != 0) {
+            MedicalTraining trainingRef = em.getReference(MedicalTraining.class, updatedMc.getMedicalTraining().getId());
+            existing.setMedicalTraining(trainingRef);
+        }
+        
+        if (updatedMc.getOwner() != null && updatedMc.getOwner().getId() != 0) {
+            Physician ownerRef = em.getReference(Physician.class, updatedMc.getOwner().getId());
+            existing.setOwner(ownerRef);
+        }
+        
+        em.flush();
+        
+        EntityOperationResponse<MedicalCertificate> response =
+                new EntityOperationResponse<>("Medical certificate updated.", existing);
+            return Response.ok(response).build();
     }
     
     @Transactional
