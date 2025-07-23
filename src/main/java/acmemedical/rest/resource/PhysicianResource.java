@@ -141,7 +141,7 @@ public class PhysicianResource {
     	Physician deleted = service.deletePhysicianById(id);
         if (deleted == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new HttpErrorResponse(404, "Patient not found"))
+                    .entity(new HttpErrorResponse(404, "Physician not found"))
                     .build();
         }
         return Response.ok(deleted).build();

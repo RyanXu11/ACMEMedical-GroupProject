@@ -107,7 +107,7 @@ Base URL: http://localhost:8080/rest-acmemedical/api/v1/
 | GET | `//{id}` | ✅ | Returns JSON "404 Not Found" for non-existent ID | Skeleton |
 | GET || ✅ | Returns "401 Unauthorized" for invalid credentials | Skeleton |
 | POST |  | ✅ | Returns "409 Conflict" on duplicate submission but still creates new record | Skeleton |
-| PUT | `/physicians/{physicianId}/patient/{patientId}/medicine` | ✅ | Has transient fields set to NULL | Skeleton |
+| PUT | `/{physicianId}/patient/{patientId}/medicine` | ✅ | Has transient fields set to NULL | Skeleton |
 | PUT | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
 | DELETE | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
 
@@ -117,8 +117,8 @@ Base URL: http://localhost:8080/rest-acmemedical/api/v1/
 | GET | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
 | GET | | ✅ | Returns all medicines | Added |
 | POST | | ✅ | Multiple submissions create multiple records | Added |
-| PUT | `/medicine/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
-| DELETE | `/medicine/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+| PUT | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
+| DELETE | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
 
 #### Patient `/patient`
 | Method | Endpoint | Status | Notes | Source |
@@ -134,9 +134,9 @@ Base URL: http://localhost:8080/rest-acmemedical/api/v1/
 |--------|----------|--------|-------|--------|
 | GET | `/{patientId}/{medicineId}` | ✅ | Returns JSON error for non-existent composite key | Added |
 | GET |  | ✅ | Returns all prescriptions | Added |
-| POST |  | ✅ | Returns JSON error on repeat submission | Added |
-| PUT | `/prescriptions/{patientId}/{medicineId}` | ✅ | Returns JSON error for non-existent composite key | Added |
-| DELETE | `/prescriptions/{patientId}/{medicineId}` | ✅ | Returns JSON error for non-existent composite key | Added |
+| POST |  | ✅⚠️ | Returns JSON error on repeat submission | Added |
+| PUT | `/{patientId}/{medicineId}` | ✅ | Returns JSON error for non-existent composite key | Added |
+| DELETE | `/{patientId}/{medicineId}` | ✅ | Returns JSON error for non-existent composite key | Added |
 
 #### MedicalTraining `/medicaltraining`
 | Method | Endpoint | Status | Notes | Source |
@@ -153,19 +153,29 @@ Base URL: http://localhost:8080/rest-acmemedical/api/v1/
 |--------|----------|--------|-------|--------|
 | GET | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
 | GET |  | ✅ | Returns "401 Unauthorized" for invalid credentials | Added |
-| POST |  | ✅ | Prevents duplicate physician-training combinations | Added |
+| POST |  | ✅⚠️ | Prevents duplicate physician-training combinations | Added |
 | PUT | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
 | DELETE | `/{id}` | ✅ | Returns JSON error for non-existent ID | Added |
 
 ## Legend
-- ✅ **Completed**: All tests passed as expected
+- ✅ **Passed**: Test passed as expected
 - ⚠️ **Warning**: Functionality works but has noted issues
 - ❌ **Failed**: Tests failed or not working as expected
 
 ## Special Notes
-1. **Prescription Entity**: Uses composite primary key (patientId + medicineId), embedded "PrescriptionPK"
-2. **MedicalTraining Entity**: embedded "DurationAndStatus"
+1. **MedicalTraining Entity**: embedded "DurationAndStatus"
+2. **⚠️ POST of Prescription**:  The `Prescription` entity uses a **composite primary key** (Physician + Patient).
+By default, the database contains:
+- Physician ID = 1
+- Patient IDs = 1 and 2
+- Prescriptions for combinations (1,1) and (1,2)
+Any attempt to create duplicate combinations will result in a primary key violation.
 
+✅ To ensure POST of Prescription testing succeeds, our tests first create a new Physician (`ID = 2`),  
+then use the combination `Physician = 2`, `Patient = 1` for the new Prescription.
+Please run the requests **in order**, starting with the `POST Physician` request.
+
+3. **⚠️ POST of MedicalCertificate**: The MedicalCertificate POST API implements business validation to prevent duplicate certificates for the same physician-training combination. Due to existing seed data, POST requests typically return 409 Conflict with a JSON error message, which is the expected and correct behavior. This demonstrates proper data integrity protection and structured error handling.
 
 ## JUnit Testing (50+ tests required)
 Run the following Maven goal in Eclipse:

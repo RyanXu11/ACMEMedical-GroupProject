@@ -1,0 +1,1637 @@
+{
+	"info": {
+		"_postman_id": "a5096e78-b97c-45ce-b618-f66d5d02b53f",
+		"name": "ACME Medical System API",
+		"description": "REST API testing for ACME Medical System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44721050",
+		"_collection_link": "https://ryan-2740497.postman.co/workspace/Ryan's-Workspace~249f4907-b81f-4b40-8c7b-a1edba188c28/collection/44721050-a5096e78-b97c-45ce-b618-f66d5d02b53f?action=share&source=collection_link&creator=44721050"
+	},
+	"item": [
+		{
+			"name": "Medicine",
+			"item": [
+				{
+					"name": "Medicine By ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicine/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicine",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Medicines",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicine",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Medicine",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"drugName\": \"Advil\",\r\n  \"manufacturerName\": \"Pfizer\",\r\n  \"dosageInformation\": \"Take 1 tablet every 8 hours\",\r\n  \"chemicalName\": \"Ibuprofen\",\r\n  \"genericName\": \"Ibuprofen\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicine",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Medicine By ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"drugName\": \"Tylenol Extra\",\r\n  \"manufacturerName\": \"McNeil Laboratories, Ottawa plant\",\r\n  \"dosageInformation\": \"Take 1-2 tablets every 6 hours\",\r\n  \"chemicalName\": \"Ibuprofen-extra\",\r\n  \"genericName\": \"Ibuprofen-extra\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest-acmemedical/api/v1/medicine/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicine",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Medicine",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicine/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicine",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patient",
+			"item": [
+				{
+					"name": "Patient By ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/patient/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"patient",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Patients",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/patient",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patient",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Justin\",\r\n  \"lastName\": \"Trudeau\",\r\n  \"year\": \"1971\",\r\n  \"address\": \"1385 Woodroffe ave, K2G 1V8\",\r\n  \"height\": \"188\",\r\n  \"weight\": \"82\",\r\n  \"smoker\": \"1\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/patient",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patient By ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Charlie II\",\r\n  \"lastName\": \"Lee Lee\",\r\n  \"year\": \"1999\",\r\n  \"address\": \"1385 Woodroffe ave\",\r\n  \"height\": \"199\",\r\n  \"weight\": \"99\",\r\n  \"smoker\": \"0\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest-acmemedical/api/v1/patient/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"patient",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patient",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/patient/2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"patient",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Prescription",
+			"item": [
+				{
+					"name": "Prescription By IDs",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/prescription/1/2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"prescription",
+								"1",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Prescriptions",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/prescription",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"prescription"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Prescription",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"physician\": {\"id\": 2},\r\n    \"patient\": {\"id\": 1},\r\n    \"medicine\": {\"id\": 1},\r\n    \"numberOfRefills\": 3,\r\n    \"prescriptionInformation\": \"Take after meal\"\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/prescription",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"prescription"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Prescription By ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"medicine\": {\"id\": 1},\r\n    \"numberOfRefills\": 3,\r\n    \"prescriptionInformation\": \"Take before meal\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest-acmemedical/api/v1/prescription/1/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"prescription",
+								"1",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Prescription",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/prescription/1/2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"prescription",
+								"1",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MedicalTraining",
+			"item": [
+				{
+					"name": "MedicalTraining By ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicaltraining/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicaltraining",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All MedicalTrainings",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicaltraining",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicaltraining"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MedicalTraining",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"medicalSchool\": {\r\n        \"id\": 1,\r\n        \"schoolType\": \"public\"\r\n    },\r\n    \"durationAndStatus\": {\r\n        \"startDate\": \"2015-07-21T21:38:05\",\r\n        \"endDate\": \"2020-07-21T21:38:05\",\r\n        \"active\": 1\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicaltraining",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicaltraining"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MedicalTraining",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"medicalSchool\": {\r\n        \"id\": 1,\r\n        \"schoolType\": \"public\"\r\n    },\r\n    \"durationAndStatus\": {\r\n        \"startDate\": \"1990-07-21T21:38:05\",\r\n        \"endDate\": \"2000-07-21T21:38:05\",\r\n        \"active\": 1\r\n    }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest-acmemedical/api/v1/medicaltraining/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicaltraining",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MedicalTraining",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicaltraining/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicaltraining",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Physician",
+			"item": [
+				{
+					"name": "Physician By ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/physician/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"physician",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Physicians",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/physician",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"physician"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Physician",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Ryan\",\r\n    \"lastName\": \"Xu\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/physician",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"physician"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Physician By ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"John II\",\r\n  \"lastName\": \"Jr. Smith\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest-acmemedical/api/v1/physician/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"physician",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Medicine - Existing Prescription",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"drugName\": \"Advil\",\r\n    \"manufacturerName\": \"Pfizer\",\r\n    \"dosageInformation\": \"200mg every 6 hours\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest-acmemedical/api/v1/physician/1/patient/1/medicine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"physician",
+								"1",
+								"patient",
+								"1",
+								"medicine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Physician",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/physician/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"physician",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MedicalSchool",
+			"item": [
+				{
+					"name": "MedicalSchool By ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/rest-acmemedical/api/v1/medicalschool/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicalschool",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All MedicalSchools",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicalschool",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicalschool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MedicalSchool",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"schoolType\": \"public\",\r\n  \"name\": \"Algonquin College\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicalschool",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicalschool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Medicalschool/id/medicaltraining",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"durationAndStatus\": {\r\n    \"startDate\": \"2022-09-01T00:00:00\",\r\n    \"endDate\": \"2023-08-31T00:00:00\",\r\n    \"active\": 1\r\n  }\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicalschool/1/medicaltraining",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicalschool",
+								"1",
+								"medicaltraining"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MedicalSchool By ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"schoolType\": \"private\",\r\n  \"name\": \"Algonquin College of Applied Arts and Technology \"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest-acmemedical/api/v1/medicalschool/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicalschool",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MedicalSchool",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicalschool/2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicalschool",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MedicalCertificate",
+			"item": [
+				{
+					"name": "MedicalCertificate By ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicalcertificate/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicalcertificate",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All MedicalCertificates",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicalcertificate",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicalcertificate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MedicalCertificate",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"signed\": 1,\r\n  \"owner\": { \"id\": 1 },\r\n  \"medicalTraining\": { \"id\": 3 }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicalcertificate",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicalcertificate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MedicalCertificate",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"signed\": 1,\r\n  \"owner\": { \"id\": 1 },\r\n  \"medicalTraining\": { \"id\": 2 }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest-acmemedical/api/v1/medicalcertificate/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicalcertificate",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MedicalCertificate",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/rest-acmemedical/api/v1/medicalcertificate/2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"rest-acmemedical",
+								"api",
+								"v1",
+								"medicalcertificate",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://localhost:8080",
+			"type": "default"
+		}
+	]
+}

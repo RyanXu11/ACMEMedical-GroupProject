@@ -39,6 +39,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -515,49 +516,85 @@ public class ACMEMedicalService implements Serializable {
     // CRUD service for MedicalCertificate entity. By Ryan
     @Transactional
     public Response persistMedicalCertificate(MedicalCertificate newMC) {
-    	// Defensive checks
-        if (newMC == null || newMC.getOwner() == null || newMC.getMedicalTraining() == null) {
-            throw new IllegalArgumentException("MedicalCertificate, Owner, and MedicalTraining must not be null");
-        }
-        
-        int ownerId = newMC.getOwner().getId();
-        int trainingId = newMC.getMedicalTraining().getId();
-        if (ownerId == 0 || trainingId == 0) {
-            throw new IllegalArgumentException("Owner ID and MedicalTraining ID must be non-zero");
-        }
-        
-        //Check for existing record
-        TypedQuery<MedicalCertificate> query = em.createQuery(
-                "SELECT mc FROM MedicalCertificate mc WHERE mc.owner.id = :ownerId AND mc.medicalTraining.id = :trainingId",
-                MedicalCertificate.class);
-            query.setParameter("ownerId", ownerId);
-            query.setParameter("trainingId", trainingId);
+        try {
+            // Null check
+            if (newMC == null || newMC.getOwner() == null || newMC.getMedicalTraining() == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(new HttpErrorResponse(400, "MedicalCertificate, Owner, and MedicalTraining must not be null"))
+                        .type(MediaType.APPLICATION_JSON)
+                        .build();
+            }
 
-        List<MedicalCertificate> existing = query.getResultList();
-        if (!existing.isEmpty()) {
-            EntityOperationResponse<MedicalCertificate> response =
-                new EntityOperationResponse<>("Medical certificate already exists for this physician and training.",
-                                               existing.get(0));
+            int ownerId = newMC.getOwner().getId();
+            int trainingId = newMC.getMedicalTraining().getId();
+            
+            if (ownerId == 0 || trainingId == 0) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(new HttpErrorResponse(400, "Owner ID and MedicalTraining ID must be non-zero"))
+                        .type(MediaType.APPLICATION_JSON)
+                        .build();
+            }
+
+            // If same as existed data
+            TypedQuery<Long> countQuery = em.createQuery(
+                "SELECT COUNT(mc) FROM MedicalCertificate mc WHERE mc.owner.id = :ownerId AND mc.medicalTraining.id = :trainingId",
+                Long.class);
+            countQuery.setParameter("ownerId", ownerId);
+            countQuery.setParameter("trainingId", trainingId);
+            
+            Long count = countQuery.getSingleResult();
+            if (count > 0) {
+                return Response.status(Response.Status.CONFLICT)
+                        .entity(new HttpErrorResponse(409, "Medical certificate already exists for this physician and training combination"))
+                        .type(MediaType.APPLICATION_JSON)
+                        .build();
+            }
+
+            // Check the entities
+            Physician physician = em.find(Physician.class, ownerId);
+            if (physician == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity(new HttpErrorResponse(404, "Physician with ID " + ownerId + " not found"))
+                        .type(MediaType.APPLICATION_JSON)
+                        .build();
+            }
+
+            MedicalTraining training = em.find(MedicalTraining.class, trainingId);
+            if (training == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity(new HttpErrorResponse(404, "MedicalTraining with ID " + trainingId + " not found"))
+                        .type(MediaType.APPLICATION_JSON)
+                        .build();
+            }
+
+            // Create new certificate
+            MedicalCertificate newCert = new MedicalCertificate();
+            newCert.setSigned(newMC.getSigned());
+            newCert.setMedicalTraining(training);
+            newCert.setOwner(physician);
+
+            em.persist(newCert);
+            em.flush();
+
+            return Response.status(Response.Status.CREATED)
+                    .entity(newCert)
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+                    
+        } catch (PersistenceException e) {
+            LOG.error("Database error while creating medical certificate: ", e);
             return Response.status(Response.Status.CONFLICT)
-                           .entity(response)
-                           .type(MediaType.APPLICATION_JSON)
-                           .build();
+                    .entity(new HttpErrorResponse(409, "Database constraint violation: Unable to create medical certificate"))
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+                    
+        } catch (Exception e) {
+            LOG.error("Unexpected error while creating medical certificate: ", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new HttpErrorResponse(500, "Internal server error occurred while creating medical certificate"))
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
         }
-
-    	//To deal with detached entity error
-        MedicalCertificate newCert = new MedicalCertificate();
-        newCert.setSigned(newMC.getSigned());
-        newCert.setMedicalTraining(em.getReference(MedicalTraining.class, trainingId));
-        newCert.setOwner(em.getReference(Physician.class, ownerId));
-
-        em.persist(newCert);
-
-        EntityOperationResponse<MedicalCertificate> response =
-            new EntityOperationResponse<>("New medical certificate created.", newCert);
-        return Response.status(Response.Status.CREATED)
-                       .entity(response)
-                       .type(MediaType.APPLICATION_JSON)
-                       .build();
     }
     
     public List<MedicalCertificate> getAllMedicalCertificates() {
