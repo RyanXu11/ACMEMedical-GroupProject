@@ -209,24 +209,47 @@ public class ACMEMedicalService implements Serializable {
     public Physician deletePhysicianById(int id) {
         Physician physician = getPhysicianById(id);
         if (physician != null) {
-            em.refresh(physician);
-            TypedQuery<SecurityUser> findUser = em.createQuery(
-            		"SELECT su FROM SecurityUser su WHERE su.physician.id = :id", 
-            		SecurityUser.class);
-            findUser.setParameter("id", id);
+        	try {
+                // 1. Delete dependent MedicalCertificate records
+                em.createQuery("DELETE FROM MedicalCertificate mc WHERE mc.owner.id = :id")
+                  .setParameter("id", id)
+                  .executeUpdate();
+        		
+                // 2. Delete dependent Prescription records 
+                em.createQuery("DELETE FROM Prescription p WHERE p.physician.id = :id")
+                  .setParameter("id", id)
+                  .executeUpdate();
+        		
+                // 3. Delete dependent SecurityUser records
+                TypedQuery<SecurityUser> findUser = em.createQuery(
+                		"SELECT su FROM SecurityUser su WHERE su.physician.id = :id", 
+                		SecurityUser.class);
+                findUser.setParameter("id", id);
+                
+	            try {
+	                SecurityUser sUser = findUser.getSingleResult();
+	                // Clear Delete SecurityUser
+	                sUser.getRoles().clear();
+	                em.merge(sUser);
+	                em.remove(sUser);
+	            } catch (NoResultException e) {
+	                LOG.warn("No SecurityUser found for physician id: " + id);
+	            }
+	            // Delete physician
+	            em.remove(physician);
+	            em.flush();
+	            
+	            return physician;       		
+        	
+        	} catch (Exception e) {
+                LOG.error("Error deleting physician: " + e.getMessage(), e);
+                throw new RuntimeException("Cannot delete physician due to database constraints");
+            }
+
             /* TODO ACMECS02 - Use NamedQuery on SecurityRole to find this related Student
                so that when we remove it, the relationship from SECURITY_USER table
                is not dangling
             */
-            try {
-                SecurityUser sUser = findUser.getSingleResult();
-                em.remove(sUser);
-            } catch (NoResultException e) {
-                LOG.warn("No SecurityUser found for physician id: " + id);
-            }
-            
-            em.remove(physician);
-            return physician;
         }
         return null;
     }

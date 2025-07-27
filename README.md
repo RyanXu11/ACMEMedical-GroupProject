@@ -63,6 +63,8 @@ acmemedical-drop.sql
 
 3. Save
 4. Ping test
+![Payara Ping](src/main/resources/PayaraPing.png)
+
 
 ### 3.4. Security Roles
 | Role         | Username  | Password |
