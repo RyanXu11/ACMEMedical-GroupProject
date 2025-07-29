@@ -38,7 +38,7 @@ public class EntityTests {
         physician = new Physician();
         patient = new Patient();
         medicine = new Medicine();
-        medicalSchool = new PublicSchool();
+        medicalSchool = new PublicSchool(); 
         medicalTraining = new MedicalTraining();
         medicalCertificate = new MedicalCertificate();
         prescription = new Prescription();
@@ -102,7 +102,7 @@ public class EntityTests {
     @Test
     @Order(4)
     void testPublicSchoolInheritance() {
-        PublicSchool publicSchool = new PublicSchool();
+        PublicSchool publicSchool = new PublicSchool(); 
         publicSchool.setName("University of Toronto Medical School");
         
         assertNotNull(publicSchool);
@@ -114,7 +114,7 @@ public class EntityTests {
     @Test
     @Order(5)
     void testPrivateSchoolInheritance() {
-        PrivateSchool privateSchool = new PrivateSchool();
+        PrivateSchool privateSchool = new PrivateSchool(); 
         privateSchool.setName("Harvard Medical School");
         
         assertNotNull(privateSchool);
@@ -143,7 +143,7 @@ public class EntityTests {
     @Test
     @Order(7)
     void testMedicalTrainingEntityWithEmbedded() {
-        PublicSchool school = new PublicSchool();
+        PublicSchool school = new PublicSchool(); 
         school.setName("Test Medical School");
         
         DurationAndStatus duration = new DurationAndStatus();
@@ -261,8 +261,8 @@ public class EntityTests {
     @Test
     @Order(13)
     void testMedicalSchoolEqualsAndHashCode() {
-        PublicSchool school1 = new PublicSchool();
-        PublicSchool school2 = new PublicSchool();
+        PublicSchool school1 = new PublicSchool(); 
+        PublicSchool school2 = new PublicSchool(); 
         
         school1.setId(1);
         school1.setName("Test School");
