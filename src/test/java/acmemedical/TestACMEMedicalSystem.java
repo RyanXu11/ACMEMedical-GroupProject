@@ -3,6 +3,11 @@
  * Course Materials CST 8277
  * Teddy Yap
  * (Original Author) Mike Norman
+ * 
+ * @author Yizhen Xu
+ * @author Ryan Xu
+ * @author Ruchen Ding
+ * Modified Date: 2025-08-01
  *
  */
 package acmemedical;
