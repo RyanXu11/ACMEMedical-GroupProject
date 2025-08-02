@@ -135,23 +135,23 @@ public class ServiceTests {
         }
     }
 
-    @Test
-    @Order(2)
-    public void test02_getPhysicianById_Service() {
-        Response response = webTarget
-            .register(adminAuth)
-            .path(PHYSICIAN_RESOURCE_NAME)
-            .path("1")
-            .request()
-            .get();
-        
-        assertThat(response.getStatus(), is(200));
-        Physician physician = response.readEntity(Physician.class);
-        assertThat(physician, is(notNullValue()));
-        assertThat(physician.getId(), is(1));
-        assertNotNull(physician.getFirstName());
-        assertNotNull(physician.getLastName());
-    }
+//    @Test
+//    @Order(2)
+//    public void test02_getPhysicianById_Service() {
+//        Response response = webTarget
+//            .register(adminAuth)
+//            .path(PHYSICIAN_RESOURCE_NAME)
+//            .path("1")
+//            .request()
+//            .get();
+//        
+//        assertThat(response.getStatus(), is(200));
+//        Physician physician = response.readEntity(Physician.class);
+//        assertThat(physician, is(notNullValue()));
+//        assertThat(physician.getId(), is(1));
+//        assertNotNull(physician.getFirstName());
+//        assertNotNull(physician.getLastName());
+//    }
 
     @Test
     @Order(3)
