@@ -63,7 +63,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ResourceTests {
+public class ResourceTest {
     private static final Class<?> _thisClaz = MethodHandles.lookup().lookupClass();
     private static final Logger logger = LogManager.getLogger(_thisClaz);
 

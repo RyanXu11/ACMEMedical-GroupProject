@@ -39,7 +39,7 @@ import acmemedical.entity.MedicalCertificate;
 
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ServiceTests {
+public class ServiceTest {
 	
     private static EntityManagerFactory emf;
     private static EntityManager em;

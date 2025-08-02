@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Order;
 import acmemedical.entity.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class EntityTests {
+public class EntityTest {
 
     private Physician physician;
     private Patient patient;
