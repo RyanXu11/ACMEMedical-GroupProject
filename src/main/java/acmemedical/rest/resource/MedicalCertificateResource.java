@@ -2,9 +2,11 @@
  * File:  MedicalCertificateResource.java
  * Course: CST8277
  * Professor: Teddy Yap
+ * @author Yizhen Xu
  * @author Ryan Xu
+ * @author Ruchen Ding
+ * Last Modified Date: 2025-08-02
  * Created Date: 2025-07-22
- * Last Modified Date: 2025-07-22
  * Description: REST API resource class to expose CRUD operations for MedicalCertificate entity.
  */
 

@@ -2,8 +2,10 @@
  * File:  NotAuthorizedToClientErrorMapper.java
  * Course Materials CST 8277
  * 
+ * @author Yizhen Xu
  * @author Ryan Xu
- * @date 2025-07-26
+ * @author Ruchen Ding
+ * Last Modified Date: 2025-08-02
  *
  * This class maps NotAuthorizedException to a standard JSON error response.
  */

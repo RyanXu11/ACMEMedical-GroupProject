@@ -3,7 +3,10 @@
  *
  * @author Teddy Yap
  * @author Shariar (Shawn) Emami
+ * @author Yizhen Xu
+ * @author Ryan Xu
  * @author Ruchen Ding
+ * Last Modified Date: 2025-08-02
  * 
  */
 package acmemedical.entity;
