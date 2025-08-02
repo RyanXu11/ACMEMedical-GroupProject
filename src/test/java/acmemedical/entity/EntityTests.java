@@ -2,6 +2,9 @@
  * File:  EntityTests.java Course Materials CST 8277
  *
  * @author Yizhen Xu
+ * @author Ryan Xu
+ * @author Ruchen Ding
+ * Modified Date: 2025-08-01
  * 
  * Entity Layer Tests - 10+ tests focusing on entity classes
  */
@@ -46,7 +49,7 @@ public class EntityTests {
 
     @Test
     @Order(1)
-    void testPhysicianEntityCreation() {
+    void test01_PhysicianEntityCreation() {
         physician.setFirstName("John");
         physician.setLastName("Doe");
         
@@ -61,7 +64,7 @@ public class EntityTests {
 
     @Test
     @Order(2)
-    void testPatientEntityCreation() {
+    void test02_PatientEntityCreation() {
         patient.setFirstName("Jane");
         patient.setLastName("Smith");
         patient.setYear(1990);
@@ -83,7 +86,7 @@ public class EntityTests {
 
     @Test
     @Order(3)
-    void testMedicineEntityCreation() {
+    void test03_MedicineEntityCreation() {
         medicine.setDrugName("Aspirin");
         medicine.setManufacturerName("Bayer");
         medicine.setDosageInformation("Take 1 tablet daily");
@@ -101,7 +104,7 @@ public class EntityTests {
 
     @Test
     @Order(4)
-    void testPublicSchoolInheritance() {
+    void test04_PublicSchoolInheritance() {
         PublicSchool publicSchool = new PublicSchool(); 
         publicSchool.setName("University of Toronto Medical School");
         
@@ -113,7 +116,7 @@ public class EntityTests {
 
     @Test
     @Order(5)
-    void testPrivateSchoolInheritance() {
+    void test05_PrivateSchoolInheritance() {
         PrivateSchool privateSchool = new PrivateSchool(); 
         privateSchool.setName("Harvard Medical School");
         
@@ -125,7 +128,7 @@ public class EntityTests {
 
     @Test
     @Order(6)
-    void testDurationAndStatusEmbeddable() {
+    void test06_DurationAndStatusEmbeddable() {
         DurationAndStatus duration = new DurationAndStatus();
         LocalDateTime startDate = LocalDateTime.now();
         LocalDateTime endDate = startDate.plusMonths(6);
@@ -142,7 +145,7 @@ public class EntityTests {
 
     @Test
     @Order(7)
-    void testMedicalTrainingEntityWithEmbedded() {
+    void test07_MedicalTrainingEntityWithEmbedded() {
         PublicSchool school = new PublicSchool(); 
         school.setName("Test Medical School");
         
@@ -162,7 +165,7 @@ public class EntityTests {
 
     @Test
     @Order(8)
-    void testMedicalCertificateEntityRelationships() {
+    void test08_MedicalCertificateEntityRelationships() {
         medicalCertificate.setSigned((byte) 1);
         medicalCertificate.setOwner(physician);
         medicalCertificate.setMedicalTraining(medicalTraining);
@@ -173,20 +176,38 @@ public class EntityTests {
         assertEquals(medicalTraining, medicalCertificate.getMedicalTraining());
     }
 
+    // ================================================
+    // COMPOSITE KEY TESTS
+    // ================================================
+
     @Test
     @Order(9)
-    void testPrescriptionPKCompositeKey() {
+    void test09_PrescriptionPK_Creation() {
         PrescriptionPK pk1 = new PrescriptionPK(1, 2);
-        PrescriptionPK pk2 = new PrescriptionPK(1, 2);
-        PrescriptionPK pk3 = new PrescriptionPK(2, 1);
         
         assertNotNull(pk1);
         assertEquals(1, pk1.getPhysicianId());
         assertEquals(2, pk1.getPatientId());
+    }
+    
+    @Test
+    @Order(10)
+    void test10_PrescriptionPK_Equality() {
+        PrescriptionPK pk1 = new PrescriptionPK(1, 2);
+        PrescriptionPK pk2 = new PrescriptionPK(1, 2);
+        PrescriptionPK pk3 = new PrescriptionPK(2, 1);
         
         // Test equality
         assertEquals(pk1, pk2);
         assertNotEquals(pk1, pk3);
+    }
+    
+    @Test
+    @Order(11)
+    void test11_PrescriptionPK_HashCode() {
+        PrescriptionPK pk1 = new PrescriptionPK(1, 2);
+        PrescriptionPK pk2 = new PrescriptionPK(1, 2);
+        PrescriptionPK pk3 = new PrescriptionPK(2, 1);
         
         // Test hashCode
         assertEquals(pk1.hashCode(), pk2.hashCode());
@@ -194,28 +215,44 @@ public class EntityTests {
     }
 
     @Test
-    @Order(10)
-    void testPrescriptionEntityWithCompositeKey() {
+    @Order(12)
+    void test12_Prescription_CompositeKey() {
         PrescriptionPK pk = new PrescriptionPK(1, 2);
         prescription.setId(pk);
-        prescription.setPhysician(physician);
-        prescription.setPatient(patient);
-        prescription.setMedicine(medicine);
-        prescription.setNumberOfRefills(5);
-        prescription.setPrescriptionInformation("Take with meals");
         
         assertNotNull(prescription);
         assertEquals(pk, prescription.getId());
+    }
+    
+    @Test
+    @Order(13)
+    void test13_Prescription_EntityRelationships() {
+        prescription.setPhysician(physician);
+        prescription.setPatient(patient);
+        prescription.setMedicine(medicine);
+        
         assertEquals(physician, prescription.getPhysician());
         assertEquals(patient, prescription.getPatient());
         assertEquals(medicine, prescription.getMedicine());
+    }
+    
+    @Test
+    @Order(14)
+    void test14_Prescription_PrescriptionDetails() {
+        prescription.setNumberOfRefills(5);
+        prescription.setPrescriptionInformation("Take with meals");
+        
         assertEquals(5, prescription.getNumberOfRefills());
         assertEquals("Take with meals", prescription.getPrescriptionInformation());
     }
 
+    // ================================================
+    // BIDIRECTIONAL RELATIONSHIP TESTS
+    // ================================================
+
     @Test
-    @Order(11)
-    void testEntityRelationshipsBidirectional() {
+    @Order(15)
+    void test15_Physician_Certificate_BidirectionalRelationship() {
         // Test physician-certificate relationship
         Set<MedicalCertificate> certificates = new HashSet<>();
         certificates.add(medicalCertificate);
@@ -224,7 +261,11 @@ public class EntityTests {
         
         assertTrue(physician.getMedicalCertificates().contains(medicalCertificate));
         assertEquals(physician, medicalCertificate.getOwner());
-        
+    }
+    
+    @Test
+    @Order(16)
+    void test16_Physician_Prescription_BidirectionalRelationship() {
         // Test physician-prescription relationship
         Set<Prescription> prescriptions = new HashSet<>();
         prescriptions.add(prescription);
@@ -235,15 +276,26 @@ public class EntityTests {
         assertEquals(physician, prescription.getPhysician());
     }
 
+    // ================================================
+    // EQUALS AND HASHCODE TESTS
+    // ================================================
+
     @Test
-    @Order(12)
-    void testEntityEqualsAndHashCode() {
+    @Order(17)
+    void test17_Physician_EqualsAndHashCode_WithoutId() {
         // Test PojoBase equals/hashCode (using Physician as example)
         Physician p1 = new Physician();
         Physician p2 = new Physician();
         
         // Before setting IDs, they should not be equal
         assertNotEquals(p1, p2);
+    }
+    
+    @Test
+    @Order(18)
+    void test18_Physician_EqualsAndHashCode_WithSameId() {
+        Physician p1 = new Physician();
+        Physician p2 = new Physician();
         
         // Set same ID
         p1.setId(1);
@@ -252,15 +304,24 @@ public class EntityTests {
         // Now they should be equal
         assertEquals(p1, p2);
         assertEquals(p1.hashCode(), p2.hashCode());
+    }
+    
+    @Test
+    @Order(19)
+    void test19_Physician_EqualsAndHashCode_WithDifferentId() {
+        Physician p1 = new Physician();
+        Physician p2 = new Physician();
         
-        // Change ID of one
+        p1.setId(1);
         p2.setId(2);
+        
+        // Different IDs should not be equal
         assertNotEquals(p1, p2);
     }
 
     @Test
-    @Order(13)
-    void testMedicalSchoolEqualsAndHashCode() {
+    @Order(20)
+    void test20_MedicalSchool_EqualsAndHashCode_SameProperties() {
         PublicSchool school1 = new PublicSchool(); 
         PublicSchool school2 = new PublicSchool(); 
         
@@ -272,15 +333,27 @@ public class EntityTests {
         
         assertEquals(school1, school2);
         assertEquals(school1.hashCode(), school2.hashCode());
+    }
+    
+    @Test
+    @Order(21)
+    void test21_MedicalSchool_EqualsAndHashCode_DifferentNames() {
+        PublicSchool school1 = new PublicSchool(); 
+        PublicSchool school2 = new PublicSchool(); 
         
-        // Change name
+        school1.setId(1);
+        school1.setName("Test School");
+        
+        school2.setId(1);
         school2.setName("Different School");
+        
+        // Different names should not be equal
         assertNotEquals(school1, school2);
     }
 
     @Test
-    @Order(14)
-    void testDurationAndStatusEqualsAndHashCode() {
+    @Order(22)
+    void test22_DurationAndStatus_EqualsAndHashCode_SameProperties() {
         DurationAndStatus d1 = new DurationAndStatus();
         DurationAndStatus d2 = new DurationAndStatus();
         
@@ -296,15 +369,31 @@ public class EntityTests {
         
         assertEquals(d1, d2);
         assertEquals(d1.hashCode(), d2.hashCode());
+    }
+    
+    @Test
+    @Order(23)
+    void test23_DurationAndStatus_EqualsAndHashCode_DifferentActive() {
+        DurationAndStatus d1 = new DurationAndStatus();
+        DurationAndStatus d2 = new DurationAndStatus();
         
-        // Change active status
+        LocalDateTime now = LocalDateTime.now();
+        
+        d1.setStartDate(now);
+        d1.setEndDate(now.plusDays(1));
+        d1.setActive((byte) 1);
+        
+        d2.setStartDate(now);
+        d2.setEndDate(now.plusDays(1));
         d2.setActive((byte) 0);
+        
+        // Different active status should not be equal
         assertNotEquals(d1, d2);
     }
 
     @Test
-    @Order(15)
-    void testMedicalTrainingEqualsAndHashCode() {
+    @Order(24)
+    void test24_MedicalTraining_EqualsAndHashCode() {
         MedicalTraining t1 = new MedicalTraining();
         MedicalTraining t2 = new MedicalTraining();
         
