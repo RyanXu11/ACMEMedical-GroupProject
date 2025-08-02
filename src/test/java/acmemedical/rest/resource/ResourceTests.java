@@ -26,15 +26,12 @@ import static acmemedical.utility.MyConstants.PRESCRIPTION_RESOURCE_NAME;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
@@ -1027,10 +1024,5 @@ public class ResourceTests {
         
         assertThat(response.getStatus(), is(403));
     }
-    
-    
-    
-    
-    
-    
+  
 }

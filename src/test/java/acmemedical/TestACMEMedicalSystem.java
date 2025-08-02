@@ -21,6 +21,7 @@ import static acmemedical.utility.MyConstants.DEFAULT_USER_PASSWORD;
 import static acmemedical.utility.MyConstants.PHYSICIAN_RESOURCE_NAME;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;	// Added by Ryan
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
@@ -99,6 +100,6 @@ public class TestACMEMedicalSystem {
         assertThat(response.getStatus(), is(200));
         List<Physician> physicians = response.readEntity(new GenericType<List<Physician>>(){});
         assertThat(physicians, is(not(empty())));
-        assertThat(physicians, hasSize(1));
+        assertThat(physicians.size(), greaterThanOrEqualTo(1));	// Modified by Ryan, after several persisting this should be great than 1
     }
 }
