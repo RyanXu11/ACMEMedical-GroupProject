@@ -4,6 +4,8 @@
  * @author Teddy Yap
  * @author Shariar (Shawn) Emami
  * @author Ryan Xu
+ * @author Ruchen Ding
+ * @author Yizhen Xu
  * 
  */
 package acmemedical.ejb;
@@ -206,53 +208,30 @@ public class ACMEMedicalService implements Serializable {
      * @param id - physician id to delete
      */
     @Transactional
-    public Physician deletePhysicianById(int id) {
+    public void deletePhysicianById(int id) {
         Physician physician = getPhysicianById(id);
-        if (physician != null) {
-        	try {
-                // 1. Delete dependent MedicalCertificate records
-                em.createQuery("DELETE FROM MedicalCertificate mc WHERE mc.owner.id = :id")
-                  .setParameter("id", id)
-                  .executeUpdate();
-        		
-                // 2. Delete dependent Prescription records 
-                em.createQuery("DELETE FROM Prescription p WHERE p.physician.id = :id")
-                  .setParameter("id", id)
-                  .executeUpdate();
-        		
-                // 3. Delete dependent SecurityUser records
-                TypedQuery<SecurityUser> findUser = em.createQuery(
-                		"SELECT su FROM SecurityUser su WHERE su.physician.id = :id", 
-                		SecurityUser.class);
-                findUser.setParameter("id", id);
-                
-	            try {
-	                SecurityUser sUser = findUser.getSingleResult();
-	                // Clear Delete SecurityUser
-	                sUser.getRoles().clear();
-	                em.merge(sUser);
-	                em.remove(sUser);
-	            } catch (NoResultException e) {
-	                LOG.warn("No SecurityUser found for physician id: " + id);
-	            }
-	            // Delete physician
-	            em.remove(physician);
-	            em.flush();
-	            
-	            return physician;       		
-        	
-        	} catch (Exception e) {
-                LOG.error("Error deleting physician: " + e.getMessage(), e);
-                throw new RuntimeException("Cannot delete physician due to database constraints");
-            }
+        em.refresh(physician);
 
-            /* TODO ACMECS02 - Use NamedQuery on SecurityRole to find this related Student
-               so that when we remove it, the relationship from SECURITY_USER table
-               is not dangling
-            */
+        /* TODO ACMECS02 - Use NamedQuery on SecurityRole to find this related Student
+        so that when we remove it, the relationship from SECURITY_USER table
+        is not dangling
+    	 */
+        TypedQuery<SecurityUser> findUser = em.createNamedQuery("SecurityUser.findByPhysicianId", SecurityUser.class);
+        findUser.setParameter("physicianId", id);
+
+        try {
+            SecurityUser sUser = findUser.getSingleResult();
+
+            // Instead of deleting the user, just nullify the physician relationship
+            sUser.setPhysician(null);
+            em.merge(sUser);
+        } catch (NoResultException e) {
+            LOG.warn("No SecurityUser found for physician id: {}", id);
         }
-        return null;
+
+        em.remove(physician);
     }
+
     
     // NOTE: This comment line added by Ryan to indicate CRUD service for MedicalSchool entity.
     public List<MedicalSchool> getAllMedicalSchools() {

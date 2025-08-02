@@ -213,7 +213,7 @@ public class ResourceTests {
             .post(Entity.entity(newPhysician, MediaType.APPLICATION_JSON));
         
         int statusCode = userResponse.getStatus();
-        assertTrue(statusCode >= 400 && statusCode < 500, "Expected 4xx status code but got " + statusCode);
+        assertTrue(statusCode >= 400 && statusCode < 500, "Expected 4xx status" + statusCode);
     }
 
     @Test
@@ -258,11 +258,11 @@ public class ResourceTests {
         Response response = webTarget
             .register(userAuth)
             .path(PHYSICIAN_RESOURCE_NAME)
-            .path("9999")
+            .path("1")
             .request()
             .delete();
         
-        assertThat(response.getStatus(), is(401));
+        assertThat(response.getStatus(), is(403));
     }
 
     // ================================================

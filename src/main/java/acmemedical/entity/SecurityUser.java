@@ -3,7 +3,9 @@
  *
  * @author Teddy Yap
  * @author Shariar (Shawn) Emami
+ * @author Ryan Xu
  * @author Ruchen Ding
+ * @author Yizhen Xu
  * 
  */
 package acmemedical.entity;
@@ -26,6 +28,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -40,18 +43,26 @@ import com.fasterxml.jackson.annotation.JsonIgnore; // added by Ruchen - end
 
 //TODO SU01 - Make this into JPA entity and add all the necessary annotations inside the class.
 @Entity  // SU01 - JPA Entity
-@NamedQuery( // Defines a reusable JPQL query to find a SecurityUser by username
-	    name = "SecurityUser.userByName",
-	    query = "SELECT su FROM SecurityUser su LEFT JOIN FETCH su.roles LEFT JOIN FETCH su.physician WHERE su.username = :param1"
-	    ) // eagerly fetching associated roles and physician to avoid LazyInitializationException
+@NamedQueries({
+	@NamedQuery( // Defines a reusable JPQL query to find a SecurityUser by username
+		    name = "SecurityUser.userByName",
+		    query = "SELECT su FROM SecurityUser su LEFT JOIN FETCH su.roles LEFT JOIN FETCH su.physician WHERE su.username = :param1"
+		    ), // eagerly fetching associated roles and physician to avoid LazyInitializationException
+    @NamedQuery(
+            name = "SecurityUser.findByRoleId",
+            query = "SELECT su FROM SecurityUser su JOIN su.roles r WHERE r.id = :roleId"
+        ),
+	@NamedQuery(
+		    name = "SecurityUser.findByPhysicianId",
+		    query = "SELECT su FROM SecurityUser su JOIN su.roles r WHERE su.physician.id = :physicianId"
+		)
+})
 @Table(name = "security_user") // SU01 - Specifies the name of the database table this entity maps to
 @Access(AccessType.FIELD) // SU01 - Instructs JPA to access fields directly rather than through getters/setters
 public class SecurityUser implements Serializable, Principal {
     /** Explicit set serialVersionUID */
     private static final long serialVersionUID = 1L;
     
-    
-
     //TODO SU02 - Add annotations.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

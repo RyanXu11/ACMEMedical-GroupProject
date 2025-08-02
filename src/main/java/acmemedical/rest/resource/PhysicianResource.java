@@ -5,6 +5,8 @@
  * @author Shariar (Shawn) Emami
  * @author (original) Mike Norman
  * @author Ryan Xu
+ * @author Ruchen Ding
+ * @author Yizhen Xu
  * 
  */
 package acmemedical.rest.resource;
@@ -138,13 +140,15 @@ public class PhysicianResource {
     @Path("/{id}")
     @RolesAllowed({ADMIN_ROLE})
     public Response deletePhysician(@PathParam("id") int id) {
-    	Physician deleted = service.deletePhysicianById(id);
-        if (deleted == null) {
+    	Physician target = service.getPhysicianById(id);
+        if (target == null) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new HttpErrorResponse(404, "Physician not found"))
                     .build();
         }
-        return Response.ok(deleted).build();
+        
+        service.deletePhysicianById(id);	//void
+        return Response.ok(target).build();
     }
     
 }
