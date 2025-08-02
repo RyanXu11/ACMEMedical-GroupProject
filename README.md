@@ -86,3 +86,18 @@ Base URL: http://localhost:8080/rest-acmemedical/api/v1/
 
 3. Ensure correct port and endpoint paths
 
+
+### 4.2 Special Notes
+1. **MedicalTraining Entity**: embedded "DurationAndStatus"
+2. **⚠️ POST of Prescription**:  The `Prescription` entity uses a **composite primary key** (Physician + Patient).
+By default, the database contains:
+- Physician ID = 1
+- Patient IDs = 1 and 2
+- Prescriptions for combinations (1,1) and (1,2)
+Any attempt to create duplicate combinations will result in a primary key violation.
+
+✅ To ensure POST of Prescription testing succeeds, our tests first create a new Physician (`ID = 2`),  
+then use the combination `Physician = 2`, `Patient = 1` for the new Prescription.
+Please run the requests **in order**, starting with the `POST Physician` request.
+
+3. **⚠️ POST of MedicalCertificate**: The MedicalCertificate POST API implements business validation to prevent duplicate certificates for the same physician-training combination. Due to existing seed data, POST requests typically return 409 Conflict with a JSON error message, which is the expected and correct behavior. This demonstrates proper data integrity protection and structured error handling.

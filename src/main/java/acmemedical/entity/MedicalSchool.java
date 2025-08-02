@@ -51,7 +51,7 @@ import jakarta.persistence.NamedQuery;	//Added by Ryan
     @JsonSubTypes.Type(value = PublicSchool.class, name = "public"),
     @JsonSubTypes.Type(value = PrivateSchool.class, name = "private")
 })  // MS04
-// @NamedQueries were necessary for service level, added by Ryan
+// @NamedQueries were necessary for service layer, added by Ryan
 @NamedQueries({
     @NamedQuery(
         name = MedicalSchool.ALL_MEDICAL_SCHOOLS_QUERY_NAME,
