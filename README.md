@@ -3,6 +3,14 @@
 CST8277 Java Enterprise Project – Summer 2025  
 Developed using Jakarta EE, Payara Server, JPA, and JAX-RS.
 
+# Group Members and Task Distribution
+| Member          | Contributions                                                                                                                           |  Average Peer Grade (Grade Provided by Group #) |
+| --------------- |-----------------------------------------------------------------------------------------------------------------------------------------| ------------------------------------------------|
+| Ruchen Ding     | Completed T1 (Entity Class JPA Mapping), T2 (User Authentication Logic Implementation), T3 (Establish User-Physician Relationship)      |             100 %                               | 
+| Ryan Xu         | Completed T4 (REST API Implementation), T5 (Security Annotations), T7 (Postman Validation)                                              |             100 %                  	      | 
+| Yizhen Xu       | Completed T6 (JUnit Testing), T8 (Documentation and Evaluation)                                                                         |             100%				      | 
+
+
 ---
 
 ## 1. Overview
