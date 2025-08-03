@@ -96,19 +96,19 @@ Base URL: http://localhost:8080/rest-acmemedical/api/v1/
 
 
 ### 4.2 Special Notes
-1. **MedicalTraining Entity**: embedded "DurationAndStatus"
-2. **⚠️ POST of Prescription**:  The `Prescription` entity uses a **composite primary key** (Physician + Patient).
+1. MedicalTraining Entity**: embedded "DurationAndStatus"
+2.  POST of Prescription**:  The `Prescription` entity uses a composite primary key** (Physician + Patient).
 By default, the database contains:
 - Physician ID = 1
 - Patient IDs = 1 and 2
 - Prescriptions for combinations (1,1) and (1,2)
 Any attempt to create duplicate combinations will result in a primary key violation.
 
-✅ To ensure POST of Prescription testing succeeds, our tests first create a new Physician (`ID = 2`),  
+To ensure POST of Prescription testing succeeds, our tests first create a new Physician (`ID = 2`),  
 then use the combination `Physician = 2`, `Patient = 1` for the new Prescription.
 Please run the requests **in order**, starting with the `POST Physician` request.
 
-3. **⚠️ POST of MedicalCertificate**: The MedicalCertificate POST API implements business validation to prevent duplicate certificates for the same physician-training combination. Due to existing seed data, POST requests typically return 409 Conflict with a JSON error message, which is the expected and correct behavior. This demonstrates proper data integrity protection and structured error handling.
+3.  POST of MedicalCertificate**: The MedicalCertificate POST API implements business validation to prevent duplicate certificates for the same physician-training combination. Due to existing seed data, POST requests typically return 409 Conflict with a JSON error message, which is the expected and correct behavior. This demonstrates proper data integrity protection and structured error handling.
 
 ##JUNIT Test
 ACME Medical System - Testing Guide
@@ -282,20 +282,20 @@ bashmvn clean install test surefire-report:report site -DgenerateReports=true
 This generates a comprehensive test report at: target/site/surefire-report.html
 ### Test Coverage Summary
 ### Entity Coverage
-✅ All 7 main entities tested
-✅ Inheritance relationships validated
-✅ Composite keys verified
-✅ Embedded objects tested
+- All 7 main entities tested
+- Inheritance relationships validated
+- Composite keys verified
+- Embedded objects tested
 ### API Endpoint Coverage
-✅ All CRUD operations tested
-✅ Security roles validated
-✅ Error scenarios covered
-✅ Content negotiation verified
+- All CRUD operations tested
+- Security roles validated
+- Error scenarios covered
+- Content negotiation verified
 ### Business Logic Coverage
-✅ Service layer operations tested
-✅ Transaction handling validated
-✅ Data persistence verified
-✅ Relationship management tested
+- Service layer operations tested
+- Transaction handling validated
+- Data persistence verified
+- Relationship management tested
 
 
 ## Key Testing Patterns
