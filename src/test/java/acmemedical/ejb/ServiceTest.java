@@ -91,9 +91,22 @@ public class ServiceTest {
     @Test
     @Order(3)
     public void test03_GetPhysicianById_existingId() {
-        Physician p = service.getPhysicianById(2);
-        assertNotNull(p);
-        assertEquals(2, p.getId());
+    	List<Physician> physicians = service.getAllPhysicians();
+        assertFalse(physicians.isEmpty(), "Physician list should not be empty");
+        System.out.println("Physician List:");
+        for (Physician p : physicians) {
+            System.out.println("  ID=" + p.getId() +
+                               ", FirstName=" + p.getFirstName() +
+                               ", LastName=" + p.getLastName());
+        }
+        
+        Physician sample = physicians.get(0);
+        int id = sample.getId();
+        System.out.println("Physician ID to fetch: " + id);
+
+        Physician fetched = service.getPhysicianById(id);
+        assertNotNull(fetched);
+        assertEquals(id, fetched.getId());
     }
 
     @Test
@@ -183,7 +196,7 @@ public class ServiceTest {
         em.persist(p);
         em.flush();  // get the ID
         int id = p.getId();
-        System.out.println("Physician ID to delete: " + id);
+//        System.out.println("Physician ID to delete: " + id);
 
         em.getTransaction().commit(); // 
         
